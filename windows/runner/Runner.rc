@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "sala_raquele_lisboa" "\0"
+            VALUE "FileDescription", "salao_raquele_lisboa" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "sala_raquele_lisboa" "\0"
+            VALUE "InternalName", "salao_raquele_lisboa" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "sala_raquele_lisboa.exe" "\0"
-            VALUE "ProductName", "sala_raquele_lisboa" "\0"
+            VALUE "OriginalFilename", "salao_raquele_lisboa.exe" "\0"
+            VALUE "ProductName", "salao_raquele_lisboa" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
