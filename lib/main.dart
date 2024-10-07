@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'bloc/agendamento.dart';
+import 'bloc/appointment.dart';
 import 'bloc/auth.dart';
-import 'page/agendamento.dart';
+import 'page/appointments.dart';
 import 'page/home.dart';
 import 'page/login.dart';
+import 'page/new_appointment.dart';
 import 'page/profile.dart';
 import 'page/register.dart';
 
@@ -32,19 +33,20 @@ class MainApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(),
         ),
-        BlocProvider<AgendamentoBloc>(
-          create: (context) => AgendamentoBloc(),
+        BlocProvider<AppointmentBloc>(
+          create: (context) => AppointmentBloc(),
         ),
       ],
       child: MaterialApp(
         title: 'App de Salão',
         initialRoute: '/login',
         routes: {
-          '/': (context) => HomePage(),
+          '/': (context) => const HomePage(),
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),
           '/profile': (context) => const ProfilePage(),
-          '/agendamentos': (context) => const AgendamentoPage(),
+          '/appointments': (context) => const AppointmentsPage(),
+          '/new_appointment': (context) => const NewAppointmentPage(),
         },
       ),
     );

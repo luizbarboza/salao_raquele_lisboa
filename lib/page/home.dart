@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'agendamento.dart';
+import 'appointments.dart';
 import 'profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,51 +11,35 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-
-  // Mapeamos o índice da BottomNavigationBar para as rotas nomeadas
-  final List<String> _routes = ['/profile', '/agendamentos'];
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    // Usa o Navigator para trocar de página com base no índice
-    Navigator.pushReplacementNamed(context, _routes[index]);
-  }
+  int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_currentIndex == 0 ? 'Perfil' : 'Agendamentos'),
-      ),
-      body: Navigator(
-        onGenerateRoute: (RouteSettings settings) {
-          // Exibe a rota correta na tela inicial com base no _currentIndex
-          return MaterialPageRoute(
-            builder: (context) {
-              return _currentIndex == 0
-                  ? const ProfilePage()
-                  : const AgendamentoPage();
-            },
-          );
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            _currentPageIndex = index;
+          });
         },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+        selectedIndex: _currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.person_outlined),
+            selectedIcon: Icon(Icons.person),
             label: 'Perfil',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
+          NavigationDestination(
+            icon: Icon(Icons.calendar_today_outlined),
+            selectedIcon: Icon(Icons.calendar_today),
             label: 'Agendamentos',
           ),
         ],
       ),
+      body: [
+        const ProfilePage(),
+        const AppointmentsPage(),
+      ][_currentPageIndex],
     );
   }
 }

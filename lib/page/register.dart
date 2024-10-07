@@ -32,7 +32,7 @@ class RegisterPage extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -40,13 +40,14 @@ class RegisterPage extends StatelessWidget {
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email'),
                 ),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _passwordController,
                   decoration: const InputDecoration(labelText: 'Senha'),
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
+                FilledButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(
                           SignUpRequested(
@@ -57,6 +58,7 @@ class RegisterPage extends StatelessWidget {
                   },
                   child: const Text('Registrar-se'),
                 ),
+                const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/login');

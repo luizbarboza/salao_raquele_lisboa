@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthState extends Equatable {
   @override
@@ -9,7 +10,11 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthAuthenticated extends AuthState {}
+class AuthAuthenticated extends AuthState {
+  User user;
+
+  AuthAuthenticated(this.user);
+}
 
 class AuthUnauthenticated extends AuthState {}
 

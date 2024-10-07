@@ -17,16 +17,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      if (response.session != null) {
-        emit(AuthAuthenticated());
-      } else {
-        emit(AuthError(
-          "Ocorreu um erro ao fazer o cadastro. Verifique os dados inseridos e tente novamente!",
-        ));
-      }
+      emit(AuthAuthenticated(response.user!));
+    } on AuthException catch (_) {
+      emit(AuthError(
+        "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",
+      ));
     } catch (e) {
       emit(AuthError(
-        "Ocorreu um erro inesperado ao fazer o cadastro. Tente novamente mais tarde.",
+        "Ocorreu um erro inesperado ao fazer o login. Tente novamente mais tarde.",
       ));
     }
   }
@@ -38,16 +36,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      if (response.session != null) {
-        emit(AuthAuthenticated());
-      } else {
-        emit(AuthError(
-          "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",
-        ));
-      }
+      emit(AuthAuthenticated(response.user!));
+    } on AuthException catch (_) {
+      emit(AuthError(
+        "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",
+      ));
     } catch (e) {
       emit(AuthError(
-        "Ocorreu um erro inesperado ao fazer o cadastro. Tente novamente mais tarde.",
+        "Ocorreu um erro inesperado ao fazer o login. Tente novamente mais tarde.",
       ));
     }
   }
