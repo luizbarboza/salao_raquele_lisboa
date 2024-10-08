@@ -15,7 +15,11 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -31,16 +35,21 @@ class RegisterPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            color: const Color(0xFFF7F7F7), // Fundo da página
-            child: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(
+                            'https://cdn-icons-png.flaticon.com/512/9993/9993258.png'),
+                      ),
+                      const SizedBox(height: 20),
                       const Text(
                         'Faça o seu cadastro',
                         style: TextStyle(
@@ -50,16 +59,11 @@ class RegisterPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Card(
+                        color: colorScheme.surfaceContainerLow,
                         elevation: 5,
-                        color: Colors.white, // Cor do fundo do card
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: Color(0xFFBDBDBD)), // Borda cinza
-                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(25.0),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               _buildTextField(
                                 controller: _nameController,
@@ -93,13 +97,16 @@ class RegisterPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 20),
                               TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.blue, // Cor do texto do botão
-                                ),
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(context, '/login');
+                                  Navigator.pushReplacementNamed(
+                                      context, '/login');
                                 },
-                                child: const Text('Já tem um login? Clique aqui'),
+                                child: Text(
+                                  'Ainda não tem uma conta? Registre-se!',
+                                  style: TextStyle(
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -107,31 +114,22 @@ class RegisterPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        width: double.infinity, // O botão ocupará toda a largura
+                        width:
+                            double.infinity, // O botão ocupará toda a largura
                         child: FilledButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(const Color(0xFF212121)), // Cor quase preta
-                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
                           onPressed: () {
                             context.read<AuthBloc>().add(
-                              SignUpRequested(
-                                name: _nameController.text,
-                                cpf: _cpfController.text,
-                                cell: _cellController.text,
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              ),
-                            );
+                                  SignUpRequested(
+                                    name: _nameController.text,
+                                    cpf: _cpfController.text,
+                                    cell: _cellController.text,
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  ),
+                                );
                           },
                           child: const Text(
                             'Cadastrar',
-                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
@@ -146,7 +144,11 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({required TextEditingController controller, required String label, required String hint, bool obscureText = false}) {
+  Widget _buildTextField(
+      {required TextEditingController controller,
+      required String label,
+      required String hint,
+      bool obscureText = false}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -154,7 +156,8 @@ class RegisterPage extends StatelessWidget {
         hintText: hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFBDBDBD)), // Borda cinza dos campos
+          borderSide: const BorderSide(
+              color: Color(0xFFBDBDBD)), // Borda cinza dos campos
         ),
         filled: true,
         fillColor: Colors.white, // Fundo do campo
