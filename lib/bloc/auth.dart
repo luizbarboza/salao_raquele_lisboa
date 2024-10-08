@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sala_raquele_lisboa/data/person.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -17,7 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      emit(AuthAuthenticated(response.user!));
+      final person = await fetchPerson({"user": response.user!.id});
+      emit(AuthAuthenticated(person[0]));
     } on AuthException catch (_) {
       emit(AuthError(
         "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",
@@ -36,7 +38,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      emit(AuthAuthenticated(response.user!));
+      final person = await fetchPerson({"user": response.user!.id});
+      emit(AuthAuthenticated(person[0]));
     } on AuthException catch (_) {
       emit(AuthError(
         "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",

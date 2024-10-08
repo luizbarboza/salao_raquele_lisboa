@@ -1,19 +1,15 @@
-import 'package:equatable/equatable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../model/person.dart';
 
-abstract class AuthState extends Equatable {
-  @override
-  List<Object> get props => [];
-}
+abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
-  User user;
+  Person person;
 
-  AuthAuthenticated(this.user);
+  AuthAuthenticated(this.person);
 }
 
 class AuthUnauthenticated extends AuthState {}
@@ -22,7 +18,4 @@ class AuthError extends AuthState {
   final String message;
 
   AuthError(this.message);
-
-  @override
-  List<Object> get props => [message];
 }

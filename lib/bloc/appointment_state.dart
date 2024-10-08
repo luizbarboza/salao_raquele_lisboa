@@ -12,6 +12,14 @@ class AppointmentFetchedAll extends AppointmentState {
   AppointmentFetchedAll(this.appointments);
 }
 
+class AppointmentInserting extends AppointmentState {}
+
+class AppointmentInserted extends AppointmentState {
+  final Appointment appointment;
+
+  AppointmentInserted(this.appointment);
+}
+
 class AppointmentError extends AppointmentState {
   final String message;
 

@@ -12,7 +12,7 @@ Future<List<Map<String, dynamic>>> fetchData({
   return await builder;
 }
 
-Future<Map<String, dynamic>> insertData({
+Future<Map<String, dynamic>?> insertData({
   required String table,
   required Map<String, Object> values,
   bool? select,
