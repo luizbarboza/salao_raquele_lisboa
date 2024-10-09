@@ -86,7 +86,6 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
         listener: (context, state) {
           if (state is AppointmentInserted) {
             Navigator.pop(context);
-            print("test");
           } else if (state is AppointmentError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),

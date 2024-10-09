@@ -6,15 +6,16 @@ import 'appointment_state.dart';
 
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
-    on<AppointmentFetchAll>(_onAppointmentFetchAll);
+    on<AppointmentFetch>(_onAppointmentFetch);
     on<AppointmentInsert>(_onAppointmentInsert);
   }
 
-  Future<void> _onAppointmentFetchAll(
-      AppointmentFetchAll event, Emitter<AppointmentState> emit) async {
+  Future<void> _onAppointmentFetch(
+      AppointmentFetch event, Emitter<AppointmentState> emit) async {
+    emit(AppointmentFetching());
     try {
-      final appointments = await fetchAllAppointments();
-      emit(AppointmentFetchedAll(appointments));
+      final appointment = await fetchAppointment();
+      emit(AppointmentFetched(appointment));
     } catch (e) {
       emit(AppointmentError(e.toString()));
     }
@@ -22,6 +23,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
 
   Future<void> _onAppointmentInsert(
       AppointmentInsert event, Emitter<AppointmentState> emit) async {
+    emit(AppointmentInserting());
     try {
       final appointment = await insertAppointment(event.values);
       emit(AppointmentInserted(appointment));

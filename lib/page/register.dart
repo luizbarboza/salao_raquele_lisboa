@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../bloc/auth.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import 'home.dart';
+import 'login.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -41,7 +43,12 @@ class RegisterPage extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, '/');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const HomePage(),
+              ),
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -138,8 +145,13 @@ class RegisterPage extends StatelessWidget {
                               const SizedBox(height: 15),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/login');
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          LoginPage(),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   'Já possui uma conta? Entre!',
@@ -159,7 +171,7 @@ class RegisterPage extends StatelessWidget {
                         child: FilledButton(
                           onPressed: () {
                             context.read<AuthBloc>().add(
-                                  SignUpRequested(
+                                  AuthSignUpRequested(
                                     email: _emailController.text,
                                     password: _passwordController.text,
                                     name: _nameController.text,

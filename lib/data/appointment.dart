@@ -1,10 +1,13 @@
 import '../model/appointment.dart';
 import 'provider.dart';
 
-Future<List<Appointment>> fetchAllAppointments() async {
-  return (await fetchData(table: "agendamento"))
-      .map(Appointment.fromMap)
-      .toList();
+Future<List<Appointment>> fetchAppointment() async {
+  final data = (await fetchData(
+    table: "agendamento",
+    columns: "*, cliente(*), especialista(*, pessoa(*), especialidade(*))",
+  ));
+  print(data);
+  return data.map(Appointment.fromMap).toList();
 }
 
 Future<Appointment> insertAppointment(Map<String, Object> values) async {

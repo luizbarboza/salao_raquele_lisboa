@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import 'home.dart';
+import 'register.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -20,7 +22,12 @@ class LoginPage extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, '/');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const HomePage(),
+              ),
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -83,8 +90,13 @@ class LoginPage extends StatelessWidget {
                               const SizedBox(height: 15),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/register');
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          RegisterPage(),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   'Ainda não possui uma conta? Cadastre-se!',
@@ -104,7 +116,7 @@ class LoginPage extends StatelessWidget {
                         child: FilledButton(
                           onPressed: () {
                             context.read<AuthBloc>().add(
-                                  SignInRequested(
+                                  AuthSignInRequested(
                                     _emailController.text,
                                     _passwordController.text,
                                   ),

@@ -6,10 +6,10 @@ class AppointmentInitial extends AppointmentState {}
 
 class AppointmentFetching extends AppointmentState {}
 
-class AppointmentFetchedAll extends AppointmentState {
+class AppointmentFetched extends AppointmentState {
   final List<Appointment> appointments;
 
-  AppointmentFetchedAll(this.appointments);
+  AppointmentFetched(this.appointments);
 }
 
 class AppointmentInserting extends AppointmentState {}

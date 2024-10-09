@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:sala_raquele_lisboa/page/new_appointment.dart';
 import '../bloc/appointment.dart';
 import '../bloc/appointment_event.dart';
 import '../bloc/appointment_state.dart';
@@ -16,7 +18,7 @@ class AppointmentsPageState extends State<AppointmentsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<AppointmentBloc>().add(AppointmentFetchAll());
+    context.read<AppointmentBloc>().add(AppointmentFetch());
   }
 
   @override
@@ -24,7 +26,12 @@ class AppointmentsPageState extends State<AppointmentsPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/new_appointment');
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => const NewAppointmentPage(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -39,19 +46,38 @@ class AppointmentsPageState extends State<AppointmentsPage> {
         builder: (context, state) {
           if (state is AppointmentFetching) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is AppointmentFetchedAll) {
+          } else if (state is AppointmentFetched) {
             return Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(10),
                     itemCount: state.appointments.length,
                     itemBuilder: (context, index) {
                       Appointment appointment = state.appointments[index];
-                      return ListTile(
-                        title: Text(appointment.client.toString()),
-                        subtitle: Text(appointment.specialist.toString()),
+                      return Column(
+                        children: [
+                          Text("Cliente: ${appointment.client.name}"),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                              "Especialidade: ${appointment.specialist.specialty.name}"),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                              "Especialista: ${appointment.specialist.person.name}"),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                              "Data e hora: ${DateFormat('dd/MM/yyyy hh:mm').format(appointment.dateTime)}"),
+                        ],
                       );
                     },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   ),
                 ),
               ],

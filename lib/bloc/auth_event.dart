@@ -5,7 +5,9 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SignUpRequested extends AuthEvent {
+class AuthCheckRequested extends AuthEvent {}
+
+class AuthSignUpRequested extends AuthEvent {
   final String email;
   final String password;
   final String name;
@@ -14,7 +16,7 @@ class SignUpRequested extends AuthEvent {
   final String address;
   final String phoneNumber;
 
-  SignUpRequested({
+  AuthSignUpRequested({
     required this.email,
     required this.password,
     required this.name,
@@ -36,11 +38,13 @@ class SignUpRequested extends AuthEvent {
       ];
 }
 
-class SignInRequested extends AuthEvent {
+class AuthSignInRequested extends AuthEvent {
   final String email;
   final String password;
 
-  SignInRequested(this.email, this.password);
+  AuthSignInRequested(this.email, this.password);
 }
 
-class SignOutRequested extends AuthEvent {}
+class AuthSignOutRequested extends AuthEvent {}
+
+class AuthSignedOut extends AuthEvent {}

@@ -1,7 +1,10 @@
+import 'person.dart';
+import 'specialist.dart';
+
 class Appointment {
   final int id;
-  final int client;
-  final int specialist;
+  final Person client;
+  final Specialist specialist;
   final DateTime dateTime;
 
   Appointment({
@@ -14,8 +17,8 @@ class Appointment {
   factory Appointment.fromMap(Map<String, dynamic> map) {
     return Appointment(
       id: map['id'],
-      client: map['cliente'],
-      specialist: map['especialista'],
+      client: Person.fromMap(map['cliente']),
+      specialist: Specialist.fromMap(map['especialista']),
       dateTime: DateTime.parse(map['data_hora']),
     );
   }
@@ -23,8 +26,8 @@ class Appointment {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'cliente': client,
-      'especialista': specialist,
+      'cliente': client.toMap(),
+      'especialista': specialist.toMap(),
       'data_hora': dateTime,
     };
   }

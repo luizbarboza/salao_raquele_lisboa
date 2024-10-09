@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sala_raquele_lisboa/bloc/auth_event.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import 'bloc/appointment.dart';
 import 'bloc/auth.dart';
+import 'bloc/auth_state.dart';
 import 'page/appointments.dart';
 import 'page/home.dart';
 import 'page/login.dart';
@@ -31,7 +33,7 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(),
+          create: (context) => AuthBloc()..add(AuthCheckRequested()),
         ),
         BlocProvider<AppointmentBloc>(
           create: (context) => AppointmentBloc(),
@@ -39,15 +41,20 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'App de Salão',
-        initialRoute: '/login',
-        routes: {
-          '/': (context) => const HomePage(),
-          '/login': (context) => LoginPage(),
-          '/register': (context) => RegisterPage(),
-          '/profile': (context) => const ProfilePage(),
-          '/appointments': (context) => const AppointmentsPage(),
-          '/new_appointment': (context) => const NewAppointmentPage(),
-        },
+        home: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            switch (state) {
+              case AuthLoading _:
+                return const Center(child: CircularProgressIndicator());
+              case AuthAuthenticated _:
+                return const HomePage();
+              case AuthUnauthenticated _ || AuthError _:
+                return LoginPage();
+              default:
+                return Container();
+            }
+          },
+        ),
       ),
     );
   }
