@@ -8,3 +8,12 @@ Future<List<Person>> fetchPerson([Map<String, Object>? criteria]) async {
   ));
   return data.map(Person.fromMap).toList();
 }
+
+Future<Person> insertPerson(Map<String, Object> values) async {
+  final data = (await insertData(
+    table: "pessoa",
+    values: values,
+    select: true,
+  ));
+  return Person.fromMap(data!);
+}

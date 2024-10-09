@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
                                   border: OutlineInputBorder(),
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 15),
                               TextField(
                                 controller: _passwordController,
                                 decoration: const InputDecoration(
@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 obscureText: true,
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 15),
                               TextButton(
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(

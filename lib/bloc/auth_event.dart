@@ -6,22 +6,34 @@ abstract class AuthEvent extends Equatable {
 }
 
 class SignUpRequested extends AuthEvent {
-  final String name;     // Novo parâmetro
-  final String cpf;      // Novo parâmetro
-  final String cell;     // Novo parâmetro
   final String email;
   final String password;
+  final String name;
+  final String cpf;
+  final String birthDate;
+  final String address;
+  final String phoneNumber;
 
   SignUpRequested({
-    required this.name,    // Exigido
-    required this.cpf,     // Exigido
-    required this.cell,    // Exigido
     required this.email,
     required this.password,
+    required this.name,
+    required this.cpf,
+    required this.birthDate,
+    required this.address,
+    required this.phoneNumber,
   });
 
   @override
-  List<Object> get props => [name, cpf, cell, email, password];  // Inclua os novos campos
+  List<Object> get props => [
+        email,
+        password,
+        name,
+        cpf,
+        birthDate,
+        address,
+        phoneNumber,
+      ];
 }
 
 class SignInRequested extends AuthEvent {

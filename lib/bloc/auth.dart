@@ -18,15 +18,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      final person = await fetchPerson({"user": response.user!.id});
-      emit(AuthAuthenticated(person[0]));
+      final person = await insertPerson({
+        "user": response.user!.id,
+        "nome": event.name,
+        "cpf": event.cpf,
+        "data_nascimento": event.birthDate,
+        "endereco": event.address,
+        "numero_telefone": event.phoneNumber,
+      });
+      emit(AuthAuthenticated(person));
     } on AuthException catch (_) {
       emit(AuthError(
-        "Ocorreu um erro ao fazer o login. Verifique os dados inseridos e tente novamente!",
+        "Ocorreu um erro ao fazer o cadastro. Verifique os dados inseridos e tente novamente!",
       ));
     } catch (e) {
+      print("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      print(e);
       emit(AuthError(
-        "Ocorreu um erro inesperado ao fazer o login. Tente novamente mais tarde.",
+        "Ocorreu um erro inesperado ao fazer o cadastro. Tente novamente mais tarde.",
       ));
     }
   }

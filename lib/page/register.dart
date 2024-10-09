@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../bloc/auth.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
 class RegisterPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _cellController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  DateTime? _pickedDate;
 
   RegisterPage({super.key});
+
+  Future<void> _selectDate(BuildContext context) async {
+    _pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (_pickedDate != null) {
+      _birthDateController.text = DateFormat('dd/MM/yyyy').format(_pickedDate!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +41,7 @@ class RegisterPage extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, '/profile');
+            Navigator.pushReplacementNamed(context, '/');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -53,11 +71,11 @@ class RegisterPage extends StatelessWidget {
                       const Text(
                         'Faça o seu cadastro',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       Card(
                         color: colorScheme.surfaceContainerLow,
                         elevation: 5,
@@ -65,24 +83,6 @@ class RegisterPage extends StatelessWidget {
                           padding: const EdgeInsets.all(25),
                           child: Column(
                             children: [
-                              _buildTextField(
-                                controller: _nameController,
-                                label: 'Nome',
-                                hint: 'Digite o seu nome',
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _cpfController,
-                                label: 'CPF',
-                                hint: 'Digite seu CPF',
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _cellController,
-                                label: 'Celular',
-                                hint: '(DDD) Celular',
-                              ),
-                              const SizedBox(height: 15),
                               _buildTextField(
                                 controller: _emailController,
                                 label: 'E-mail',
@@ -95,7 +95,47 @@ class RegisterPage extends StatelessWidget {
                                 hint: 'Digite a sua senha',
                                 obscureText: true,
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 15),
+                              _buildTextField(
+                                controller: _nameController,
+                                label: 'Nome',
+                                hint: 'Digite o seu nome',
+                              ),
+                              const SizedBox(height: 15),
+                              _buildTextField(
+                                controller: _cpfController,
+                                label: 'CPF',
+                                hint: 'Digite seu CPF',
+                              ),
+                              const SizedBox(height: 15),
+                              TextField(
+                                controller: _birthDateController,
+                                decoration: InputDecoration(
+                                  labelText: 'Data de nascimento',
+                                  hintText:
+                                      'Selecione a sua data de nascimento',
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.calendar_today),
+                                    onPressed: () => _selectDate(context),
+                                  ),
+                                  border: const OutlineInputBorder(),
+                                ),
+                                readOnly: true,
+                                onTap: () => _selectDate(context),
+                              ),
+                              const SizedBox(height: 15),
+                              _buildTextField(
+                                controller: _addressController,
+                                label: 'Endereço',
+                                hint: 'Digite o seu endereço',
+                              ),
+                              const SizedBox(height: 15),
+                              _buildTextField(
+                                controller: _phoneNumberController,
+                                label: 'Número de telefone',
+                                hint: '(DDD) Telefone',
+                              ),
+                              const SizedBox(height: 15),
                               TextButton(
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(
@@ -120,11 +160,14 @@ class RegisterPage extends StatelessWidget {
                           onPressed: () {
                             context.read<AuthBloc>().add(
                                   SignUpRequested(
-                                    name: _nameController.text,
-                                    cpf: _cpfController.text,
-                                    cell: _cellController.text,
                                     email: _emailController.text,
                                     password: _passwordController.text,
+                                    name: _nameController.text,
+                                    cpf: _cpfController.text,
+                                    birthDate: DateFormat('yyyy-MM-dd')
+                                        .format(_pickedDate!),
+                                    address: _addressController.text,
+                                    phoneNumber: _phoneNumberController.text,
                                   ),
                                 );
                           },
