@@ -62,7 +62,7 @@ class RegisterPage extends StatelessWidget {
                         color: colorScheme.surfaceContainerLow,
                         elevation: 5,
                         child: Padding(
-                          padding: const EdgeInsets.all(25.0),
+                          padding: const EdgeInsets.all(25),
                           child: Column(
                             children: [
                               _buildTextField(
@@ -102,7 +102,7 @@ class RegisterPage extends StatelessWidget {
                                       context, '/login');
                                 },
                                 child: Text(
-                                  'Ainda não tem uma conta? Registre-se!',
+                                  'Já possui uma conta? Entre!',
                                   style: TextStyle(
                                     color: colorScheme.onSurface,
                                   ),
@@ -154,13 +154,7 @@ class RegisterPage extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-              color: Color(0xFFBDBDBD)), // Borda cinza dos campos
-        ),
-        filled: true,
-        fillColor: Colors.white, // Fundo do campo
+        border: const OutlineInputBorder(),
       ),
       obscureText: obscureText,
     );

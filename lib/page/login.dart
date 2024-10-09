@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
                         color: colorScheme.surfaceContainerLow,
                         elevation: 5,
                         child: Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(25),
                           child: Column(
                             children: [
                               TextField(
@@ -87,7 +87,7 @@ class LoginPage extends StatelessWidget {
                                       context, '/register');
                                 },
                                 child: Text(
-                                  'Ainda não tem uma conta? Registre-se!',
+                                  'Ainda não possui uma conta? Cadastre-se!',
                                   style: TextStyle(
                                     color: colorScheme.onSurface,
                                   ),
