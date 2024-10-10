@@ -47,40 +47,53 @@ class AppointmentsPageState extends State<AppointmentsPage> {
           if (state is AppointmentFetching) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AppointmentFetched) {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(10),
-                    itemCount: state.appointments.length,
-                    itemBuilder: (context, index) {
-                      Appointment appointment = state.appointments[index];
-                      return Column(
-                        children: [
-                          Text("Cliente: ${appointment.client.name}"),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                              "Especialidade: ${appointment.specialist.specialty.name}"),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                              "Especialista: ${appointment.specialist.person.name}"),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                              "Data e hora: ${DateFormat('dd/MM/yyyy hh:mm').format(appointment.dateTime)}"),
-                        ],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  ),
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 400),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.separated(
+                        padding: EdgeInsets.all(8),
+                        itemCount: state.appointments.length,
+                        itemBuilder: (context, index) {
+                          Appointment appointment = state.appointments[index];
+                          return Card(
+                            elevation: 5,
+                            child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Cliente: ${appointment.client.name}"),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                      "Especialidade: ${appointment.specialist.specialty.name}"),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                      "Especialista: ${appointment.specialist.person.name}"),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                      "Data e hora: ${DateFormat('dd/MM/yyyy hh:mm').format(appointment.dateTime)}"),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 8,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             );
           }
           return Container();
