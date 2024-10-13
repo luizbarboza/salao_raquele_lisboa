@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:sala_raquele_lisboa/page/new_appointment.dart';
 import '../bloc/appointment.dart';
 import '../bloc/appointment_event.dart';
 import '../bloc/appointment_state.dart';
+import '../bloc/auth.dart';
+import '../bloc/auth_state.dart';
 import '../model/appointment.dart';
 
 class AppointmentsPage extends StatefulWidget {
@@ -18,7 +21,10 @@ class AppointmentsPageState extends State<AppointmentsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<AppointmentBloc>().add(AppointmentFetch());
+    context.read<AppointmentBloc>().add(AppointmentFetch({
+          "cliente":
+              (context.read<AuthBloc>().state as AuthAuthenticated).person.id
+        }));
   }
 
   @override
@@ -31,7 +37,7 @@ class AppointmentsPageState extends State<AppointmentsPage> {
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(
-                text: "Agendado",
+                text: "Próximos",
                 icon: Icon(Icons.schedule),
               ),
               Tab(
@@ -113,28 +119,65 @@ class AppointmentsLisView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Appointment appointment = appointments[index];
                   return Card(
-                    elevation: 5,
+                    elevation: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Cliente: ${appointment.client.name}"),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                    child: Icon(Symbols.person, size: 20)),
+                                TextSpan(text: " ${appointment.client.name}"),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 6,
                           ),
-                          Text(
-                              "Especialidade: ${appointment.specialist.specialty.name}"),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                    child: Icon(Symbols.license, size: 20)),
+                                TextSpan(
+                                    text:
+                                        " ${appointment.specialist.specialty.name}"),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 6,
                           ),
-                          Text(
-                              "Especialista: ${appointment.specialist.person.name}"),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                    child:
+                                        Icon(Symbols.person_apron, size: 20)),
+                                TextSpan(
+                                    text:
+                                        " ${appointment.specialist.person.name}"),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 6,
                           ),
-                          Text(
-                              "Data e hora: ${DateFormat('dd/MM/yyyy HH:mm').format(appointment.dateTime)}"),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: Icon(Symbols.schedule, size: 20),
+                                ),
+                                TextSpan(
+                                    text:
+                                        " ${DateFormat('dd/MM/yyyy HH:mm').format(appointment.dateTime)}"),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

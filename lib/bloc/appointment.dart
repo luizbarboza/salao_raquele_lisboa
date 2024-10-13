@@ -14,7 +14,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       AppointmentFetch event, Emitter<AppointmentState> emit) async {
     emit(AppointmentFetching());
     try {
-      final appointment = await fetchAppointment();
+      final appointment = await fetchAppointment(event.criteria);
       emit(AppointmentFetched(appointment));
     } catch (e) {
       emit(AppointmentError(e.toString()));

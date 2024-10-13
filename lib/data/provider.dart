@@ -5,9 +5,9 @@ Future<List<Map<String, dynamic>>> fetchData({
   String? columns,
   Map<String, Object>? criteria,
 }) async {
-  final builder = Supabase.instance.client.from(table).select(columns ?? "*");
+  var builder = Supabase.instance.client.from(table).select(columns ?? "*");
 
-  criteria?.forEach((key, value) => builder.eq(key, value));
+  criteria?.forEach((key, value) => builder = builder.eq(key, value));
 
   return await builder;
 }
@@ -30,8 +30,8 @@ Future<List<Map<String, dynamic>>?> updateData({
   bool? select,
 }) async {
   select ??= false;
-  final builder = Supabase.instance.client.from(table).update(values);
-  criteria?.forEach((key, value) => builder.eq(key, value));
+  var builder = Supabase.instance.client.from(table).update(values);
+  criteria?.forEach((key, value) => builder = builder.eq(key, value));
   if (select) return await builder.select();
   return await builder;
 }
@@ -42,8 +42,8 @@ Future<List<Map<String, dynamic>>?> deleteData({
   bool? select,
 }) async {
   select ??= false;
-  final builder = Supabase.instance.client.from(table).delete();
-  criteria.forEach((key, value) => builder.eq(key, value));
+  var builder = Supabase.instance.client.from(table).delete();
+  criteria.forEach((key, value) => builder = builder.eq(key, value));
   if (select) return await builder.select();
   return await builder;
 }

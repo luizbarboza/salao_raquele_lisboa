@@ -60,135 +60,131 @@ class RegisterPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-              child: Center(
+          return Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 400),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                            'https://cdn-icons-png.flaticon.com/512/9993/9993258.png'),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Faça o seu cadastro',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Card(
-                        color: colorScheme.surfaceContainerLow,
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(25),
-                          child: Column(
-                            children: [
-                              _buildTextField(
-                                controller: _emailController,
-                                label: 'E-mail',
-                                hint: 'exemplo@gmail.com',
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _passwordController,
-                                label: 'Senha',
-                                hint: 'Digite a sua senha',
-                                obscureText: true,
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _nameController,
-                                label: 'Nome',
-                                hint: 'Digite o seu nome',
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _cpfController,
-                                label: 'CPF',
-                                hint: 'Digite seu CPF',
-                              ),
-                              const SizedBox(height: 15),
-                              TextField(
-                                controller: _birthDateController,
-                                decoration: InputDecoration(
-                                  labelText: 'Data de nascimento',
-                                  hintText:
-                                      'Selecione a sua data de nascimento',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_today),
-                                    onPressed: () => _selectDate(context),
-                                  ),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                readOnly: true,
-                                onTap: () => _selectDate(context),
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _addressController,
-                                label: 'Endereço',
-                                hint: 'Digite o seu endereço',
-                              ),
-                              const SizedBox(height: 15),
-                              _buildTextField(
-                                controller: _phoneNumberController,
-                                label: 'Número de telefone',
-                                hint: '(DDD) Telefone',
-                              ),
-                              const SizedBox(height: 15),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          LoginPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Já possui uma conta? Entre!',
-                                  style: TextStyle(
-                                    color: colorScheme.onSurface,
-                                  ),
-                                ),
-                              ),
-                            ],
+                  child: Card(
+                    color: colorScheme.surfaceContainerLow,
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Column(
+                        children: [
+                          const CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(
+                                'https://cdn-icons-png.flaticon.com/512/9993/9993258.png'),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width:
-                            double.infinity, // O botão ocupará toda a largura
-                        child: FilledButton(
-                          onPressed: () {
-                            context.read<AuthBloc>().add(
-                                  AuthSignUpRequested(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                    name: _nameController.text,
-                                    cpf: _cpfController.text,
-                                    birthDate: DateFormat('yyyy-MM-dd')
-                                        .format(_pickedDate!),
-                                    address: _addressController.text,
-                                    phoneNumber: _phoneNumberController.text,
-                                  ),
-                                );
-                          },
-                          child: const Text(
-                            'Cadastrar',
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Faça o seu cadastro',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 30),
+                          _buildTextField(
+                            controller: _emailController,
+                            label: 'E-mail',
+                            hint: 'exemplo@gmail.com',
+                          ),
+                          const SizedBox(height: 15),
+                          _buildTextField(
+                            controller: _passwordController,
+                            label: 'Senha',
+                            hint: 'Digite a sua senha',
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 15),
+                          _buildTextField(
+                            controller: _nameController,
+                            label: 'Nome',
+                            hint: 'Digite o seu nome',
+                          ),
+                          const SizedBox(height: 15),
+                          _buildTextField(
+                            controller: _cpfController,
+                            label: 'CPF',
+                            hint: 'Digite seu CPF',
+                          ),
+                          const SizedBox(height: 15),
+                          TextField(
+                            controller: _birthDateController,
+                            decoration: InputDecoration(
+                              labelText: 'Data de nascimento',
+                              hintText: 'Selecione a sua data de nascimento',
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.calendar_today),
+                                onPressed: () => _selectDate(context),
+                              ),
+                              border: const OutlineInputBorder(),
+                            ),
+                            readOnly: true,
+                            onTap: () => _selectDate(context),
+                          ),
+                          const SizedBox(height: 15),
+                          _buildTextField(
+                            controller: _addressController,
+                            label: 'Endereço',
+                            hint: 'Digite o seu endereço',
+                          ),
+                          const SizedBox(height: 15),
+                          _buildTextField(
+                            controller: _phoneNumberController,
+                            label: 'Número de telefone',
+                            hint: '(DDD) Telefone',
+                          ),
+                          const SizedBox(height: 15),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      LoginPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Já possui uma conta? Entre!',
+                              style: TextStyle(
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: double
+                                .infinity, // O botão ocupará toda a largura
+                            child: FilledButton(
+                              onPressed: () {
+                                context.read<AuthBloc>().add(
+                                      AuthSignUpRequested(
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
+                                        name: _nameController.text,
+                                        cpf: _cpfController.text,
+                                        birthDate: DateFormat('yyyy-MM-dd')
+                                            .format(_pickedDate!),
+                                        address: _addressController.text,
+                                        phoneNumber:
+                                            _phoneNumberController.text,
+                                      ),
+                                    );
+                              },
+                              child: const Text(
+                                'Cadastrar',
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

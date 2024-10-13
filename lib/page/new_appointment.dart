@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:sala_raquele_lisboa/bloc/appointment_event.dart';
 import 'package:sala_raquele_lisboa/bloc/specialty_event.dart';
@@ -85,7 +86,7 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
         setState(() {
           _pickedDateTime = fullDateTime;
           _dateTimeController.text =
-              "${fullDateTime.day}/${fullDateTime.month}/${fullDateTime.year} ${pickedTime.format(context)}";
+              "${DateFormat('dd/MM/yyyy HH:mm').format(fullDateTime)}";
         });
       }
     }
@@ -93,6 +94,9 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<SpecialtyBloc>(
@@ -128,11 +132,12 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Adicionando a imagem acima das caixas de seleção
-                    Image.network(
-                      'https://png.pngtree.com/png-vector/20190429/ourmid/pngtree-agenda-icon-vector-illustration-in-line-style-for-any-purpose-png-image_996811.jpg',
-                      height: 100, // Ajuste de tamanho da imagem
+                    SvgPicture.asset(
+                      width: 250,
+                      "assets/new_appointment_2.svg",
                     ),
-                    const SizedBox(height: 20), // Espaço entre imagem e seleções
+                    const SizedBox(
+                        height: 20), // Espaço entre imagem e seleções
                     BlocBuilder<SpecialtyBloc, SpecialtyState>(
                         builder: (context, state) {
                       var dropdownMenuEntries = <DropdownMenuEntry<int?>>[];
@@ -193,24 +198,22 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
                         controller: _dateTimeController,
                         decoration: InputDecoration(
                           labelText: 'Data e hora',
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.calendar_today),
-                            onPressed: () => _selectDate(context),
-                          ),
+                          suffixIcon: const Icon(Icons.calendar_today),
+                          border: OutlineInputBorder(),
                         ),
+                        onTap: () => _selectDate(context),
                         readOnly: true,
                       ),
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                      return ElevatedButton.icon(
+                      return FilledButton.icon(
                         icon: const Icon(Icons.schedule),
                         onPressed: () {
                           final auth = context.read<AuthBloc>();
                           final authState = auth.state;
                           if (authState is AuthAuthenticated) {
-                            final appointment =
-                                context.read<AppointmentBloc>();
+                            final appointment = context.read<AppointmentBloc>();
                             appointment.add(AppointmentInsert({
                               "cliente": authState.person.id,
                               "especialista": _selectedSpecialist!,
