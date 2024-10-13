@@ -6,14 +6,26 @@ import 'specialty_state.dart';
 
 class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
   SpecialtyBloc() : super(SpecialtyInitial()) {
-    on<SpecialtyFetchAll>(_onSpecialtyFetchAll);
+    on<SpecialtyFetch>(_onSpecialtyFetch);
+    on<SpecialtyInsert>(_onSpecialtyInsert);
   }
 
-  Future<void> _onSpecialtyFetchAll(
-      SpecialtyFetchAll event, Emitter<SpecialtyState> emit) async {
+  Future<void> _onSpecialtyFetch(
+      SpecialtyFetch event, Emitter<SpecialtyState> emit) async {
     try {
-      final specialtys = await fetchAllSpecialties();
-      emit(SpecialtyFetchedAll(specialtys));
+      final specialty = await fetchSpecialty();
+      emit(SpecialtyFetched(specialty));
+    } catch (e) {
+      emit(SpecialtyError(e.toString()));
+    }
+  }
+
+  Future<void> _onSpecialtyInsert(
+      SpecialtyInsert event, Emitter<SpecialtyState> emit) async {
+    emit(SpecialtyInserting());
+    try {
+      final appointment = await insertSpecialty(event.values);
+      emit(SpecialtyInserted(appointment));
     } catch (e) {
       emit(SpecialtyError(e.toString()));
     }

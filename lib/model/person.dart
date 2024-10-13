@@ -5,6 +5,7 @@ class Person {
   final DateTime birthDate;
   final String phoneNumber;
   final String address;
+  final String role;
 
   Person({
     required this.id,
@@ -13,6 +14,7 @@ class Person {
     required this.birthDate,
     required this.phoneNumber,
     required this.address,
+    required this.role,
   });
 
   factory Person.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class Person {
       birthDate: DateTime.parse(map['data_nascimento']),
       phoneNumber: map['numero_telefone'],
       address: map['endereco'],
+      role: map["posicao"],
     );
   }
 
@@ -34,6 +37,7 @@ class Person {
       'data_nascimento': birthDate,
       'numero_telefone': phoneNumber,
       'endereco': address,
+      'posicao': role,
     };
   }
 }

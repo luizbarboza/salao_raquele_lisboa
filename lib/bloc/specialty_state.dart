@@ -6,10 +6,18 @@ class SpecialtyInitial extends SpecialtyState {}
 
 class SpecialtyFetching extends SpecialtyState {}
 
-class SpecialtyFetchedAll extends SpecialtyState {
+class SpecialtyFetched extends SpecialtyState {
   final List<Specialty> specialties;
 
-  SpecialtyFetchedAll(this.specialties);
+  SpecialtyFetched(this.specialties);
+}
+
+class SpecialtyInserting extends SpecialtyState {}
+
+class SpecialtyInserted extends SpecialtyState {
+  final Specialty specialty;
+
+  SpecialtyInserted(this.specialty);
 }
 
 class SpecialtyError extends SpecialtyState {

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:sala_raquele_lisboa/bloc/appointment_event.dart';
-import 'package:sala_raquele_lisboa/bloc/specialty_event.dart';
 import '../bloc/appointment.dart';
+import '../bloc/appointment_event.dart';
 import '../bloc/appointment_state.dart';
 import '../bloc/auth.dart';
 import '../bloc/auth_state.dart';
@@ -12,40 +11,8 @@ import '../bloc/specialist.dart';
 import '../bloc/specialist_event.dart';
 import '../bloc/specialist_state.dart';
 import '../bloc/specialty.dart';
+import '../bloc/specialty_event.dart';
 import '../bloc/specialty_state.dart';
-
-void main() {
-  runApp(const SalaRaqueleLisboaApp());
-}
-
-class SalaRaqueleLisboaApp extends StatelessWidget {
-  const SalaRaqueleLisboaApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sala Raquele Lisboa',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-            backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-      home: const NewAppointmentPage(),
-    );
-  }
-}
 
 class NewAppointmentPage extends StatefulWidget {
   const NewAppointmentPage({super.key});
@@ -94,13 +61,10 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<SpecialtyBloc>(
-          create: (context) => SpecialtyBloc()..add(SpecialtyFetchAll()),
+          create: (context) => SpecialtyBloc()..add(SpecialtyFetch()),
         ),
         BlocProvider<SpecialistBloc>(
           create: (context) => SpecialistBloc(),
@@ -141,7 +105,7 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
                     BlocBuilder<SpecialtyBloc, SpecialtyState>(
                         builder: (context, state) {
                       var dropdownMenuEntries = <DropdownMenuEntry<int?>>[];
-                      if (state is SpecialtyFetchedAll) {
+                      if (state is SpecialtyFetched) {
                         dropdownMenuEntries = state.specialties
                             .map((specialty) => DropdownMenuEntry(
                                   value: specialty.id,
