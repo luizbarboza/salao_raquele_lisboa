@@ -92,7 +92,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthSignOutRequested event, Emitter<AuthState> emit) async {
     try {
       await Supabase.instance.client.auth.signOut();
-      emit(AuthUnauthenticated());
+      //emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(
         "Ocorreu um erro ao tentar sair. Tente novamente!",

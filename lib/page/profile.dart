@@ -28,7 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: colorScheme.surface,
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          final person = (state as AuthAuthenticated).person;
+          if (state is! AuthAuthenticated) return Container();
+          final person = state.person;
           return Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -51,8 +52,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 const CircleAvatar(
                                   radius: 60,
-                                  backgroundImage: NetworkImage(
-                                      'https://cdn-icons-png.flaticon.com/512/9993/9993258.png'),
+                                  backgroundImage: AssetImage(
+                                      'assets/default_profile_picture.jpeg'),
                                 ),
                                 const SizedBox(height: 20),
                                 Text(

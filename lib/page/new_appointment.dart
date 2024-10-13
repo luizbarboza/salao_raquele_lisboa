@@ -181,7 +181,7 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
                             appointment.add(AppointmentInsert({
                               "cliente": authState.person.id,
                               "especialista": _selectedSpecialist!,
-                              "data_hora": DateFormat('yyyy-MM-dd hh:mm:ss')
+                              "data_hora": DateFormat('yyyy-MM-dd HH:mm:ss')
                                   .format(_pickedDateTime!),
                             }));
                           }

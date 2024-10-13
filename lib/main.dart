@@ -39,24 +39,26 @@ class MainApp extends StatelessWidget {
           create: (context) => AppointmentBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'App de Salão',
-        home: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            switch (state) {
-              case AuthLoading _:
-                return const Center(child: CircularProgressIndicator());
-              case AuthAuthenticated _:
-                return const HomePage();
-              case AuthUnauthenticated _ || AuthError _:
-                return LoginPage();
-              default:
-                return Container();
-            }
-          },
-        ),
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink)),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          final Widget home;
+          switch (state) {
+            case AuthLoading _:
+              home = const Center(child: CircularProgressIndicator());
+            case AuthAuthenticated _:
+              home = const HomePage();
+            case AuthUnauthenticated _ || AuthError _:
+              home = const LoginPage();
+            default:
+              home = Container();
+          }
+          return MaterialApp(
+            title: 'App de Salão',
+            home: home,
+            theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink)),
+          );
+        },
       ),
     );
   }
