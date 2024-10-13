@@ -21,10 +21,15 @@ class AppointmentsPageState extends State<AppointmentsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<AppointmentBloc>().add(AppointmentFetch({
-          "cliente":
-              (context.read<AuthBloc>().state as AuthAuthenticated).person.id
-        }));
+    final person = (context.read<AuthBloc>().state as AuthAuthenticated).person;
+    final appointmentsBloc = context.read<AppointmentBloc>();
+    if (person.role == "cliente") {
+      appointmentsBloc.add(AppointmentFetch({"cliente": person.id}));
+    } else if (person.role == "colaborador") {
+      appointmentsBloc.add(AppointmentFetchSpecialist(person.id));
+    } else if (person.role == "administrador") {
+      appointmentsBloc.add(AppointmentFetch());
+    }
   }
 
   @override

@@ -17,3 +17,13 @@ Future<Person> insertPerson(Map<String, Object> values) async {
   ));
   return Person.fromMap(data!);
 }
+
+Future<Person> makeCollaborator(int id) async {
+  final data = (await updateData(
+    table: "pessoa",
+    values: {"posicao": "colaborador"},
+    criteria: {"id": id},
+    select: true,
+  ));
+  return Person.fromMap(data![0]);
+}

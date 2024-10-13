@@ -7,7 +7,14 @@ import '../bloc/auth_state.dart';
 import 'home.dart';
 import 'login.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -18,18 +25,19 @@ class RegisterPage extends StatelessWidget {
 
   DateTime? _pickedDate;
 
-  RegisterPage({super.key});
-
   Future<void> _selectDate(BuildContext context) async {
-    _pickedDate = await showDatePicker(
+    final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
 
-    if (_pickedDate != null) {
-      _birthDateController.text = DateFormat('dd/MM/yyyy').format(_pickedDate!);
+    if (pickedDate != null) {
+      setState(() {
+        _pickedDate = pickedDate;
+        _birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+      });
     }
   }
 

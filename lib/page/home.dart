@@ -41,7 +41,7 @@ class HomePageState extends State<HomePage> {
             selectedIcon: Icon(Icons.calendar_today),
             label: 'Agendamentos',
           ),
-          if (person.role == "colaborador")
+          if (person.role == "administrador")
             const NavigationDestination(
               icon: Icon(Symbols.license),
               selectedIcon: Icon(
@@ -50,7 +50,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: 'Especialidades',
             ),
-          if (person.role == "colaborador")
+          if (person.role == "administrador")
             const NavigationDestination(
               icon: Icon(Symbols.person_apron),
               selectedIcon: Icon(
@@ -64,8 +64,8 @@ class HomePageState extends State<HomePage> {
       body: [
         const ProfilePage(),
         const AppointmentsPage(),
-        if (person.role == "colaborador") const SpecialtiesPage(),
-        if (person.role == "colaborador") const SpecialistsPage(),
+        if (person.role == "administrador") const SpecialtiesPage(),
+        if (person.role == "administrador") const SpecialistsPage(),
       ][_currentPageIndex],
     );
   }

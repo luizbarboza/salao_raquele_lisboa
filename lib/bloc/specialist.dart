@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sala_raquele_lisboa/data/person.dart';
 
 import '../data/specialist.dart';
 import 'specialist_event.dart';
@@ -26,6 +27,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
     emit(SpecialistInserting());
     try {
       final specialist = await insertSpecialist(event.values);
+      await makeCollaborator(specialist.person.id);
       emit(SpecialistInserted(specialist));
     } catch (e) {
       emit(SpecialistError(e.toString()));
