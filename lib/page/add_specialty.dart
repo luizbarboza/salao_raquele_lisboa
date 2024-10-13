@@ -65,6 +65,9 @@ class AddSpecialtyPageState extends State<AddSpecialtyPage> {
                           labelText: 'Descrição',
                           border: OutlineInputBorder(),
                         ),
+                        minLines: 3, // Set this
+                        maxLines: 6, // and this
+                        keyboardType: TextInputType.multiline,
                       ),
                     ),
                     const SizedBox(height: 20),

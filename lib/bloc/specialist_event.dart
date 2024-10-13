@@ -5,3 +5,9 @@ class SpecialistFetch extends SpecialistEvent {
 
   SpecialistFetch([this.criteria]);
 }
+
+class SpecialistInsert extends SpecialistEvent {
+  Map<String, Object> values;
+
+  SpecialistInsert(this.values);
+}

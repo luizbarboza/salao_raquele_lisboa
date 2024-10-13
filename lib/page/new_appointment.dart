@@ -136,7 +136,7 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
                       var dropdownMenuEntries = <DropdownMenuEntry<int?>>[];
                       if (_selectedSpecialty != null &&
                           state is SpecialistFetched) {
-                        dropdownMenuEntries = state.specialist
+                        dropdownMenuEntries = state.specialists
                             .map((specialist) => DropdownMenuEntry(
                                   value: specialist.id,
                                   label: specialist.person.name,

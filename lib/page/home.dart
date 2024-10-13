@@ -7,6 +7,7 @@ import 'package:sala_raquele_lisboa/page/specialties.dart';
 import '../bloc/auth.dart';
 import 'appointments.dart';
 import 'profile.dart';
+import 'specialists.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,12 +50,22 @@ class HomePageState extends State<HomePage> {
               ),
               label: 'Especialidades',
             ),
+          if (person.role == "colaborador")
+            const NavigationDestination(
+              icon: Icon(Symbols.person_apron),
+              selectedIcon: Icon(
+                Symbols.person_apron,
+                fill: 1,
+              ),
+              label: 'Especialistas',
+            ),
         ],
       ),
       body: [
         const ProfilePage(),
         const AppointmentsPage(),
         if (person.role == "colaborador") const SpecialtiesPage(),
+        if (person.role == "colaborador") const SpecialistsPage(),
       ][_currentPageIndex],
     );
   }

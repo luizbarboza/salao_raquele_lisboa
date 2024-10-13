@@ -10,3 +10,12 @@ Future<List<Specialist>> fetchSpecialist(
   ));
   return data.map(Specialist.fromMap).toList();
 }
+
+Future<Specialist> insertSpecialist(Map<String, Object> values) async {
+  final data = (await insertData(
+    table: "especialista",
+    values: values,
+    select: true,
+  ));
+  return (await fetchSpecialist({"id": data!["id"]}))[0];
+}
