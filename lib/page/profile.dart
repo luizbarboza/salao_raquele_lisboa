@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../bloc/auth.dart';
+import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -18,6 +19,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<AuthBloc>().add(AuthSignOutRequested());
+        },
+        child: const Icon(Icons.logout),
+      ),
       backgroundColor: colorScheme.surface,
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
