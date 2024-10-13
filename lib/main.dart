@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sala_raquele_lisboa/bloc/auth_event.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import 'bloc/appointment.dart';
 import 'bloc/auth.dart';
 import 'bloc/auth_state.dart';
-import 'page/appointments.dart';
 import 'page/home.dart';
 import 'page/login.dart';
-import 'page/new_appointment.dart';
-import 'page/profile.dart';
-import 'page/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +51,14 @@ class MainApp extends StatelessWidget {
           }
           return MaterialApp(
             title: 'App de Salão',
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('pt', 'BR'),
+            ],
             home: home,
             theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink)),
