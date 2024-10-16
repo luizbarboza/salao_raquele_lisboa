@@ -36,34 +36,36 @@ class MainApp extends StatelessWidget {
           create: (context) => AppointmentBloc(),
         ),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          final Widget home;
-          switch (state) {
-            case AuthLoading _:
-              home = const Center(child: CircularProgressIndicator());
-            case AuthAuthenticated _:
-              home = const HomePage();
-            case AuthUnauthenticated _ || AuthError _:
-              home = const LoginPage();
-            default:
-              home = Container();
+      child: MaterialApp(
+        title: 'App de Salão',
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('pt', 'BR'),
+        ],
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => LoginPage(),
+          '/home': (context) {
+            return BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                switch (state) {
+                  case AuthUnauthenticated _:
+                    Navigator.of(context).pushReplacementNamed('/login');
+                }
+              },
+              child: const HomePage(),
+            );
           }
-          return MaterialApp(
-            title: 'App de Salão',
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('pt', 'BR'),
-            ],
-            home: home,
-            theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink)),
-          );
         },
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.pink,
+          ),
+        ),
       ),
     );
   }

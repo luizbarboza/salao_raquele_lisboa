@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../bloc/auth.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
-import 'home.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -51,12 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => const HomePage(),
-              ),
-            );
+            Navigator.pushReplacementNamed(context, '/home');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
