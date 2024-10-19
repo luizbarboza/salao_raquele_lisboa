@@ -12,6 +12,7 @@ class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
 
   Future<void> _onSpecialtyFetch(
       SpecialtyFetch event, Emitter<SpecialtyState> emit) async {
+    emit(SpecialtyFetching());
     try {
       final specialty = await fetchSpecialty();
       emit(SpecialtyFetched(specialty));
