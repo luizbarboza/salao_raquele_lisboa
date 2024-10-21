@@ -7,3 +7,9 @@ class SpecialtyInsert extends SpecialtyEvent {
 
   SpecialtyInsert(this.values);
 }
+
+class SpecialtyDelete extends SpecialtyEvent {
+  int id;
+
+  SpecialtyDelete(this.id);
+}

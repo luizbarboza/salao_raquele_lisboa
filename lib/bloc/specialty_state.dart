@@ -20,6 +20,10 @@ class SpecialtyInserted extends SpecialtyState {
   SpecialtyInserted(this.specialty);
 }
 
+class SpecialtyDeleting extends SpecialtyState {}
+
+class SpecialtyDeleted extends SpecialtyState {}
+
 class SpecialtyError extends SpecialtyState {
   final String message;
 

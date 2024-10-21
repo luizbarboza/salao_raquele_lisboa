@@ -63,8 +63,8 @@ class MainApp extends StatelessWidget {
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.pink,
-          ),
+              seedColor: Colors.pink,
+              brightness: MediaQuery.of(context).platformBrightness),
         ),
       ),
     );

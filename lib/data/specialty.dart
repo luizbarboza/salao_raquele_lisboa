@@ -15,3 +15,10 @@ Future<Specialty> insertSpecialty(Map<String, Object> values) async {
   ));
   return Specialty.fromMap(data!);
 }
+
+Future<void> deleteSpecialty(int id) async {
+  (await deleteData(
+    table: "especialidade",
+    criteria: {"id": id},
+  ));
+}

@@ -20,6 +20,10 @@ class AppointmentInserted extends AppointmentState {
   AppointmentInserted(this.appointment);
 }
 
+class AppointmentDeleting extends AppointmentState {}
+
+class AppointmentDeleted extends AppointmentState {}
+
 class AppointmentError extends AppointmentState {
   final String message;
 

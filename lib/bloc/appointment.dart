@@ -9,6 +9,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     on<AppointmentFetch>(_onAppointmentFetch);
     on<AppointmentFetchSpecialist>(_onAppointmentFetchSpecialist);
     on<AppointmentInsert>(_onAppointmentInsert);
+    on<AppointmentDelete>(_onAppointmentDelete);
   }
 
   Future<void> _onAppointmentFetch(
@@ -26,7 +27,8 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       AppointmentFetchSpecialist event, Emitter<AppointmentState> emit) async {
     emit(AppointmentFetching());
     try {
-      final appointment = await fetchSpecialistAppointment(event.id);
+      final appointment =
+          await fetchSpecialistAppointment(event.specialistPersonId);
       emit(AppointmentFetched(appointment));
     } catch (e) {
       emit(AppointmentError(e.toString()));
@@ -39,6 +41,17 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     try {
       final appointment = await insertAppointment(event.values);
       emit(AppointmentInserted(appointment));
+    } catch (e) {
+      emit(AppointmentError(e.toString()));
+    }
+  }
+
+  Future<void> _onAppointmentDelete(
+      AppointmentDelete event, Emitter<AppointmentState> emit) async {
+    emit(AppointmentDeleting());
+    try {
+      await deleteAppointment(event.id);
+      emit(AppointmentDeleted());
     } catch (e) {
       emit(AppointmentError(e.toString()));
     }

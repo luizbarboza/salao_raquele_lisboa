@@ -9,6 +9,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
   SpecialistBloc() : super(SpecialistInitial()) {
     on<SpecialistFetch>(_onSpecialistFetch);
     on<SpecialistInsert>(_onSpecialistInsert);
+    on<SpecialistDelete>(_onSpecialistDelete);
   }
 
   Future<void> _onSpecialistFetch(
@@ -29,6 +30,17 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
       final specialist = await insertSpecialist(event.values);
       await makeCollaborator(specialist.person.id);
       emit(SpecialistInserted(specialist));
+    } catch (e) {
+      emit(SpecialistError(e.toString()));
+    }
+  }
+
+  Future<void> _onSpecialistDelete(
+      SpecialistDelete event, Emitter<SpecialistState> emit) async {
+    emit(SpecialistDeleting());
+    try {
+      await deleteSpecialist(event.id);
+      emit(SpecialistDeleted());
     } catch (e) {
       emit(SpecialistError(e.toString()));
     }

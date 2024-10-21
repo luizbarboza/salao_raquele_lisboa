@@ -2,71 +2,89 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:sala_raquele_lisboa/bloc/auth_state.dart';
+import 'package:sala_raquele_lisboa/components/adaptative_scaffold.dart';
 import 'package:sala_raquele_lisboa/page/specialties.dart';
 
 import '../bloc/auth.dart';
+import '../bloc/auth_event.dart';
+import 'add_specialist.dart';
+import 'add_specialty.dart';
 import 'appointments.dart';
+import 'new_appointment.dart';
 import 'profile.dart';
 import 'specialists.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  int _currentPageIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
-    final person = (context.read<AuthBloc>().state as AuthAuthenticated).person;
-    return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
-        },
-        selectedIndex: _currentPageIndex,
-        destinations: <Widget>[
-          const NavigationDestination(
-            icon: Icon(Icons.person_outlined),
-            selectedIcon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          const NavigationDestination(
-            icon: Icon(Icons.calendar_today_outlined),
-            selectedIcon: Icon(Icons.calendar_today),
-            label: 'Agendamentos',
-          ),
-          if (person.role == "administrador")
-            const NavigationDestination(
-              icon: Icon(Symbols.license),
-              selectedIcon: Icon(
-                Symbols.license,
-                fill: 1,
-              ),
-              label: 'Especialidades',
-            ),
-          if (person.role == "administrador")
-            const NavigationDestination(
-              icon: Icon(Symbols.person_apron),
-              selectedIcon: Icon(
-                Symbols.person_apron,
-                fill: 1,
-              ),
-              label: 'Especialistas',
-            ),
-        ],
+    final authBloc = context.read<AuthBloc>();
+    final person = (authBloc.state as AuthAuthenticated).person;
+    return AdaptativeScaffold(destinations: [
+      AdaptativeScaffoldDestination(
+        label: "Perfil",
+        iconData: Symbols.person,
+        fab: AdaptativeScaffoldDestinationFab(
+          label: "Sair",
+          iconData: Symbols.logout,
+          onPressed: () => authBloc.add(AuthSignOutRequested()),
+        ),
+        body: const ProfilePage(),
       ),
-      body: [
-        const ProfilePage(),
-        const AppointmentsPage(),
-        if (person.role == "administrador") const SpecialtiesPage(),
-        if (person.role == "administrador") const SpecialistsPage(),
-      ][_currentPageIndex],
-    );
+      AdaptativeScaffoldDestination(
+        label: "Agendamentos",
+        iconData: Symbols.calendar_today,
+        fab: AdaptativeScaffoldDestinationFab(
+          label: "Novo",
+          iconData: Symbols.add,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const NewAppointmentPage(),
+              ),
+            );
+          },
+        ),
+        body: const AppointmentsPage(),
+      ),
+      if (person.role == "administrador") ...[
+        AdaptativeScaffoldDestination(
+          label: "Especialidades",
+          iconData: Symbols.license,
+          fab: AdaptativeScaffoldDestinationFab(
+            label: "Adicionar",
+            iconData: Symbols.add,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const AddSpecialtyPage(),
+                ),
+              );
+            },
+          ),
+          body: const SpecialtiesPage(),
+        ),
+        AdaptativeScaffoldDestination(
+          label: "Especialistas",
+          iconData: Symbols.person_apron,
+          fab: AdaptativeScaffoldDestinationFab(
+            label: "Adicionar",
+            iconData: Symbols.add,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const AddSpecialistPage(),
+                ),
+              );
+            },
+          ),
+          body: const SpecialistsPage(),
+        ),
+      ],
+    ]);
   }
 }

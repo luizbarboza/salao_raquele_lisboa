@@ -8,6 +8,7 @@ class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
   SpecialtyBloc() : super(SpecialtyInitial()) {
     on<SpecialtyFetch>(_onSpecialtyFetch);
     on<SpecialtyInsert>(_onSpecialtyInsert);
+    on<SpecialtyDelete>(_onSpecialtyDelete);
   }
 
   Future<void> _onSpecialtyFetch(
@@ -27,6 +28,17 @@ class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
     try {
       final appointment = await insertSpecialty(event.values);
       emit(SpecialtyInserted(appointment));
+    } catch (e) {
+      emit(SpecialtyError(e.toString()));
+    }
+  }
+
+  Future<void> _onSpecialtyDelete(
+      SpecialtyDelete event, Emitter<SpecialtyState> emit) async {
+    emit(SpecialtyDeleting());
+    try {
+      await deleteSpecialty(event.id);
+      emit(SpecialtyDeleted());
     } catch (e) {
       emit(SpecialtyError(e.toString()));
     }

@@ -11,3 +11,9 @@ class SpecialistInsert extends SpecialistEvent {
 
   SpecialistInsert(this.values);
 }
+
+class SpecialistDelete extends SpecialistEvent {
+  int id;
+
+  SpecialistDelete(this.id);
+}

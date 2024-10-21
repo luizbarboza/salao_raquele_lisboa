@@ -96,6 +96,7 @@ class LoginPage extends StatelessWidget {
                               style: TextStyle(
                                 color: colorScheme.onSurface,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           const SizedBox(height: 20),

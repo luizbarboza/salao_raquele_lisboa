@@ -5,7 +5,6 @@ import '../bloc/specialty.dart';
 import '../bloc/specialty_event.dart';
 import '../bloc/specialty_state.dart';
 import '../model/specialty.dart';
-import 'add_specialty.dart';
 
 class SpecialtiesPage extends StatefulWidget {
   const SpecialtiesPage({super.key});
@@ -23,39 +22,29 @@ class SpecialtiesPageState extends State<SpecialtiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Especialidades'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => const AddSpecialtyPage(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: BlocConsumer<SpecialtyBloc, SpecialtyState>(
-        bloc: SpecialtyBloc()..add(SpecialtyFetch()),
-        listener: (context, state) {
-          if (state is SpecialtyError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-        builder: (context, state) {
-          switch (state) {
-            case SpecialtyFetching():
-              return const Center(child: CircularProgressIndicator());
-            case SpecialtyFetched():
-              return SpecialtiesLisView(state.specialties);
-            default:
-              return Container();
-          }
-        },
+      body: BlocProvider(
+        create: (context) => SpecialtyBloc()..add(SpecialtyFetch()),
+        child: BlocConsumer<SpecialtyBloc, SpecialtyState>(
+          listener: (context, state) {
+            if (state is SpecialtyError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            } else if (state is SpecialtyDeleted) {
+              context.read<SpecialtyBloc>().add(SpecialtyFetch());
+            }
+          },
+          builder: (context, state) {
+            switch (state) {
+              case SpecialtyFetching():
+                return const Center(child: CircularProgressIndicator());
+              case SpecialtyFetched():
+                return SpecialtiesLisView(state.specialties);
+              default:
+                return Container();
+            }
+          },
+        ),
       ),
     );
   }
@@ -83,41 +72,57 @@ class SpecialtiesLisView extends StatelessWidget {
                     elevation: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Column(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text.rich(
-                            TextSpan(
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const WidgetSpan(
-                                  child: Icon(
-                                    Symbols.license,
-                                    size: 20,
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const WidgetSpan(
+                                        child: Icon(
+                                          Symbols.license,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: " ${specialty.name}",
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                TextSpan(
-                                  text: " ${specialty.name}",
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const WidgetSpan(
+                                        child: Icon(
+                                          Symbols.description,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: " ${specialty.description}",
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                const WidgetSpan(
-                                  child: Icon(
-                                    Symbols.description,
-                                    size: 20,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " ${specialty.description}",
-                                ),
-                              ],
-                            ),
+                          IconButton.filledTonal(
+                            onPressed: () {
+                              context
+                                  .read<SpecialtyBloc>()
+                                  .add(SpecialtyDelete(specialty.id));
+                            },
+                            //label: const Text("Cancelar"),
+                            icon: const Icon(Symbols.delete),
                           ),
                         ],
                       ),

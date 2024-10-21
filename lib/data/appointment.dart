@@ -11,12 +11,13 @@ Future<List<Appointment>> fetchAppointment(
   return data.map(Appointment.fromMap).toList();
 }
 
-Future<List<Appointment>> fetchSpecialistAppointment(int id) async {
+Future<List<Appointment>> fetchSpecialistAppointment(
+    int specialistPersonId) async {
   final data = (await fetchData(
     table: "agendamento",
     columns:
         "*, cliente(*), especialista!inner(*, pessoa!inner(*), especialidade!inner(*))",
-    criteria: {"especialista.pessoa.id": id},
+    criteria: {"especialista.pessoa.id": specialistPersonId},
   ));
   return data.map(Appointment.fromMap).toList();
 }
@@ -28,4 +29,11 @@ Future<Appointment> insertAppointment(Map<String, Object> values) async {
     select: true,
   ));
   return (await fetchAppointment({"id": data!["id"]}))[0];
+}
+
+Future<void> deleteAppointment(int id) async {
+  (await deleteData(
+    table: "agendamento",
+    criteria: {"id": id},
+  ));
 }

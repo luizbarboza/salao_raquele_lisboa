@@ -20,6 +20,10 @@ class SpecialistInserted extends SpecialistState {
   SpecialistInserted(this.specialist);
 }
 
+class SpecialistDeleting extends SpecialistState {}
+
+class SpecialistDeleted extends SpecialistState {}
+
 class SpecialistError extends SpecialistState {
   final String message;
 

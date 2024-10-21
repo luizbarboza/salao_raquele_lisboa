@@ -157,6 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               style: TextStyle(
                                 color: colorScheme.onSurface,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           const SizedBox(height: 20),

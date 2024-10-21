@@ -19,3 +19,10 @@ Future<Specialist> insertSpecialist(Map<String, Object> values) async {
   ));
   return (await fetchSpecialist({"id": data!["id"]}))[0];
 }
+
+Future<void> deleteSpecialist(int id) async {
+  (await deleteData(
+    table: "especialista",
+    criteria: {"id": id},
+  ));
+}
