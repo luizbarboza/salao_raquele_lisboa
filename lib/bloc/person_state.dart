@@ -10,6 +10,10 @@ class PersonFetched extends PersonState {
   PersonFetched(this.people);
 }
 
+class PersonUpdating extends PersonState {}
+
+class PersonUpdated extends PersonState {}
+
 class PersonError extends PersonState {
   final String message;
 

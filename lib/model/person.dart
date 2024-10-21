@@ -6,6 +6,7 @@ class Person {
   final String phoneNumber;
   final String address;
   final String role;
+  final String avatar;
 
   Person({
     required this.id,
@@ -15,6 +16,7 @@ class Person {
     required this.phoneNumber,
     required this.address,
     required this.role,
+    required this.avatar,
   });
 
   factory Person.fromMap(Map<String, dynamic> map) {
@@ -26,6 +28,7 @@ class Person {
       phoneNumber: map['numero_telefone'],
       address: map['endereco'],
       role: map["posicao"],
+      avatar: map["avatar"],
     );
   }
 
@@ -38,6 +41,7 @@ class Person {
       'numero_telefone': phoneNumber,
       'endereco': address,
       'posicao': role,
+      'avatar': avatar,
     };
   }
 }

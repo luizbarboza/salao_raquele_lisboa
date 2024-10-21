@@ -7,6 +7,7 @@ import 'person_state.dart';
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
   PersonBloc() : super(PersonInitial()) {
     on<PersonFetch>(_onPersonFetch);
+    on<PersonUpdateAvatar>(_onPersonUpdateAvatar);
   }
 
   Future<void> _onPersonFetch(
@@ -14,6 +15,17 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
     try {
       final person = await fetchPerson(event.criteria);
       emit(PersonFetched(person));
+    } catch (e) {
+      emit(PersonError(e.toString()));
+    }
+  }
+
+  Future<void> _onPersonUpdateAvatar(
+      PersonUpdateAvatar event, Emitter<PersonState> emit) async {
+    emit(PersonUpdating());
+    try {
+      await updateAvatar(event.id, event.data);
+      emit(PersonUpdated());
     } catch (e) {
       emit(PersonError(e.toString()));
     }

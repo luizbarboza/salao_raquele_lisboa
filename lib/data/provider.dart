@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<List<Map<String, dynamic>>> fetchData({
@@ -46,4 +48,16 @@ Future<List<Map<String, dynamic>>?> deleteData({
   criteria.forEach((key, value) => builder = builder.eq(key, value));
   if (select) return await builder.select();
   return await builder;
+}
+
+Future<String> uploadData(String path, Uint8List data) async {
+  await Supabase.instance.client.storage.from('avatar').uploadBinary(
+        path,
+        data,
+        fileOptions: const FileOptions(
+          cacheControl: '0',
+          upsert: true,
+        ),
+      );
+  return Supabase.instance.client.storage.from('avatar').getPublicUrl(path);
 }
