@@ -44,70 +44,72 @@ class AppointmentsPageState extends State<AppointmentsPage>
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return BlocConsumer<AppointmentBloc, AppointmentState>(
-      listener: (context, state) {
-        if (state is AppointmentError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        } else if (state is AppointmentDeleted) {
-          _fetch();
-        }
-      },
-      builder: (context, state) {
-        List<Widget> children;
-        if (state is AppointmentFetching) {
-          children = List.generate(
-            2,
-            (_) => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state is AppointmentFetched) {
-          final appointments = state.appointments;
-          final now = DateTime.now();
-          children = [
-            AppointmentsLisView(
-              appointments.where((a) => a.dateTime.isAfter(now)).toList(),
-            ),
-            AppointmentsLisView(
-              appointments.where((a) => a.dateTime.isBefore(now)).toList(),
-            )
-          ];
-        } else {
-          children = List.generate(
-            2,
-            (_) => Container(),
-          );
-        }
-        return Column(
-          children: [
-            TabBar(
-              tabs: const <Widget>[
-                Tab(
-                  text: "Próximos",
-                  icon: Icon(Symbols.schedule),
-                ),
-                Tab(
-                  text: "Histórico",
-                  icon: Icon(Symbols.history),
-                ),
-              ],
-              controller: _tabController,
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(8),
-                color: colorScheme.surfaceContainer,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: children,
+    return Scaffold(
+      body: BlocConsumer<AppointmentBloc, AppointmentState>(
+        listener: (context, state) {
+          if (state is AppointmentError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          } else if (state is AppointmentDeleted) {
+            _fetch();
+          }
+        },
+        builder: (context, state) {
+          List<Widget> children;
+          if (state is AppointmentFetching) {
+            children = List.generate(
+              2,
+              (_) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (state is AppointmentFetched) {
+            final appointments = state.appointments;
+            final now = DateTime.now();
+            children = [
+              AppointmentsLisView(
+                appointments.where((a) => a.dateTime.isAfter(now)).toList(),
+              ),
+              AppointmentsLisView(
+                appointments.where((a) => a.dateTime.isBefore(now)).toList(),
+              )
+            ];
+          } else {
+            children = List.generate(
+              2,
+              (_) => Container(),
+            );
+          }
+          return Column(
+            children: [
+              TabBar(
+                tabs: const <Widget>[
+                  Tab(
+                    text: "Próximos",
+                    icon: Icon(Symbols.schedule),
+                  ),
+                  Tab(
+                    text: "Histórico",
+                    icon: Icon(Symbols.history),
+                  ),
+                ],
+                controller: _tabController,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  color: colorScheme.surfaceContainer,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: children,
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }
