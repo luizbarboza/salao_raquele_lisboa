@@ -14,13 +14,28 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // User
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // Personal information
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+
+  // Contact
+  final TextEditingController _countryCodeController = TextEditingController();
+  final TextEditingController _dddController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  // Address
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _municipalityController = TextEditingController();
+  final TextEditingController _neighborhoodController = TextEditingController();
+  final TextEditingController _publicPlaceController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _complementController = TextEditingController();
 
   DateTime? _pickedDate;
 
@@ -38,6 +53,246 @@ class _RegisterPageState extends State<RegisterPage> {
         _birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       });
     }
+  }
+
+  final _formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
+
+  var _activeStep = 0;
+
+  List<Step> _steps() {
+    return [
+      Step(
+        state: _activeStep <= 0 ? StepState.editing : StepState.complete,
+        isActive: _activeStep >= 0,
+        title: const Text('Usuário'),
+        content: Form(
+          key: _formKeys[0],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Email',
+                ),
+                validator: (text) {
+                  return text != null &&
+                          RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(text)
+                      ? null
+                      : "Informe um email válido";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                obscureText: true,
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Senha',
+                ),
+                validator: (text) {
+                  return text != null &&
+                          RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')
+                              .hasMatch(text)
+                      ? null
+                      : "Informe uma senha forte";
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      Step(
+        state: _activeStep <= 1 ? StepState.editing : StepState.complete,
+        isActive: _activeStep >= 1,
+        title: const Text('Endereço'),
+        content: Form(
+          key: _formKeys[1],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _cepController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'CEP',
+                ),
+                validator: (text) {
+                  return text != null &&
+                          RegExp(r'(^[0-9]{5})-?([0-9]{3}$)').hasMatch(text)
+                      ? null
+                      : "Informe um CEP válido";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _stateController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Estado',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o estado";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _municipalityController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Município',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o município";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _neighborhoodController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Bairro',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o bairro";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _publicPlaceController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Logradouro',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o logradouro";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _numberController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Número',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o número";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _complementController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Complemento',
+                ),
+                validator: (text) {
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      Step(
+        state: _activeStep <= 2 ? StepState.editing : StepState.complete,
+        isActive: _activeStep >= 2,
+        title: const Text('Informações pessoais'),
+        content: Form(
+          key: _formKeys[2],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o nome";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _cpfController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'CPF',
+                ),
+                validator: (text) {
+                  return text != null &&
+                          RegExp(r'(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)')
+                              .hasMatch(text)
+                      ? null
+                      : "Informe um CPF válido";
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _cpfController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Data de nascimento',
+                ),
+                validator: (text) {
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
   }
 
   @override
