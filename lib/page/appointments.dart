@@ -95,7 +95,6 @@ class AppointmentsPageState extends State<AppointmentsPage>
               ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(8),
                   color: colorScheme.surfaceContainer,
                   child: TabBarView(
                     controller: _tabController,
@@ -119,6 +118,7 @@ class AppointmentsLisView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: const EdgeInsets.all(8),
       itemCount: appointments.length,
       itemBuilder: (context, index) {
         Appointment appointment = appointments[index];
