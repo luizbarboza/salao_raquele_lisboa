@@ -17,6 +17,7 @@ class SpecialtiesPageState extends State<SpecialtiesPage> {
   @override
   void initState() {
     super.initState();
+    context.read<SpecialtyBloc>().add(SpecialtyFetch());
   }
 
   @override
@@ -25,31 +26,29 @@ class SpecialtiesPageState extends State<SpecialtiesPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => SpecialtyBloc()..add(SpecialtyFetch()),
-        child: Container(
-          color: colorScheme.surfaceContainer,
-          child: BlocConsumer<SpecialtyBloc, SpecialtyState>(
-            listener: (context, state) {
-              if (state is SpecialtyError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
-              } else if (state is SpecialtyDeleted) {
-                context.read<SpecialtyBloc>().add(SpecialtyFetch());
-              }
-            },
-            builder: (context, state) {
-              switch (state) {
-                case SpecialtyFetching():
-                  return const Center(child: CircularProgressIndicator());
-                case SpecialtyFetched():
-                  return SpecialtiesLisView(state.specialties);
-                default:
-                  return Container();
-              }
-            },
-          ),
+      body: Container(
+        color: colorScheme.surfaceContainer,
+        child: BlocConsumer<SpecialtyBloc, SpecialtyState>(
+          listener: (context, state) {
+            if (state is SpecialtyError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            } else if (state is SpecialtyInserted ||
+                state is SpecialtyDeleted) {
+              context.read<SpecialtyBloc>().add(SpecialtyFetch());
+            }
+          },
+          builder: (context, state) {
+            switch (state) {
+              case SpecialtyFetching():
+                return const Center(child: CircularProgressIndicator());
+              case SpecialtyFetched():
+                return SpecialtiesLisView(state.specialties);
+              default:
+                return Container();
+            }
+          },
         ),
       ),
     );

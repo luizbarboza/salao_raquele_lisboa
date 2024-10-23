@@ -7,6 +7,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'bloc/appointment.dart';
 import 'bloc/auth.dart';
 import 'bloc/auth_state.dart';
+import 'bloc/specialist.dart';
+import 'bloc/specialty.dart';
 import 'page/home.dart';
 import 'page/login.dart';
 
@@ -34,6 +36,12 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider<AppointmentBloc>(
           create: (context) => AppointmentBloc(),
+        ),
+        BlocProvider<SpecialtyBloc>(
+          create: (context) => SpecialtyBloc(),
+        ),
+        BlocProvider<SpecialistBloc>(
+          create: (context) => SpecialistBloc(),
         ),
       ],
       child: MaterialApp(

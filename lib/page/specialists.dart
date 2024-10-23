@@ -17,6 +17,7 @@ class SpecialistsPageState extends State<SpecialistsPage> {
   @override
   void initState() {
     super.initState();
+    context.read<SpecialistBloc>().add(SpecialistFetch());
   }
 
   @override
@@ -25,31 +26,29 @@ class SpecialistsPageState extends State<SpecialistsPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => SpecialistBloc()..add(SpecialistFetch()),
-        child: Container(
-          color: colorScheme.surfaceContainer,
-          child: BlocConsumer<SpecialistBloc, SpecialistState>(
-            listener: (context, state) {
-              if (state is SpecialistError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
-              } else if (state is SpecialistDeleted) {
-                context.read<SpecialistBloc>().add(SpecialistFetch());
-              }
-            },
-            builder: (context, state) {
-              switch (state) {
-                case SpecialistFetching():
-                  return const Center(child: CircularProgressIndicator());
-                case SpecialistFetched():
-                  return SpecialistsListView(state.specialists);
-                default:
-                  return Container();
-              }
-            },
-          ),
+      body: Container(
+        color: colorScheme.surfaceContainer,
+        child: BlocConsumer<SpecialistBloc, SpecialistState>(
+          listener: (context, state) {
+            if (state is SpecialistError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            } else if (state is SpecialistInserted ||
+                state is SpecialistDeleted) {
+              context.read<SpecialistBloc>().add(SpecialistFetch());
+            }
+          },
+          builder: (context, state) {
+            switch (state) {
+              case SpecialistFetching():
+                return const Center(child: CircularProgressIndicator());
+              case SpecialistFetched():
+                return SpecialistsListView(state.specialists);
+              default:
+                return Container();
+            }
+          },
         ),
       ),
     );

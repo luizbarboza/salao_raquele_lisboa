@@ -18,13 +18,11 @@ class AddSpecialtyPageState extends State<AddSpecialtyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SpecialtyBloc>(
-          create: (context) => SpecialtyBloc(),
-        ),
-      ],
-      child: BlocListener<SpecialtyBloc, SpecialtyState>(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Adicionar especialidade'),
+      ),
+      body: BlocConsumer<SpecialtyBloc, SpecialtyState>(
         listener: (context, state) {
           if (state is SpecialtyInserted) {
             Navigator.pop(context);
@@ -34,11 +32,13 @@ class AddSpecialtyPageState extends State<AddSpecialtyPage> {
             );
           }
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Adicionar especialidade'),
-          ),
-          body: Center(
+        builder: (context, state) {
+          if (state is SpecialtyInserting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Center(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -88,8 +88,8 @@ class AddSpecialtyPageState extends State<AddSpecialtyPage> {
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
