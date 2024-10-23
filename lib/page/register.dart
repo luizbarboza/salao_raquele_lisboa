@@ -36,11 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
   DateTime? _pickedDate;
 
   Future<void> _selectDate(BuildContext context) async {
+    final now = DateTime.now();
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      initialDate: DateTime(2000, 1, 1),
+      firstDate: now.copyWith(year: now.year - 120),
+      lastDate: now.copyWith(year: now.year - 12),
     );
 
     if (pickedDate != null) {
