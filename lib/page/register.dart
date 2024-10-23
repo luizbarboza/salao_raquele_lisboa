@@ -71,13 +71,19 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     if (value.length <= 9) {
       return '${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6)}';
+    } else if (value.length <= 10) {
+      return '${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6, 9)}-${value.substring(9)}';
     }
     return '${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6, 9)}-${value.substring(9, 11)}';
   }
 
   String _formatCep(String value) {
     value = value.replaceAll(RegExp(r'\D'), '');
-    if (value.length <= 5) return value;
+    if (value.length <= 5) {
+      return value;
+    } else if (value.length <= 7) {
+      return '${value.substring(0, 5)}-${value.substring(5)}';
+    }
     return '${value.substring(0, 5)}-${value.substring(5, 8)}';
   }
 
