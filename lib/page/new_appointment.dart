@@ -77,12 +77,6 @@ class NewAppointmentPageState extends State<NewAppointmentPage> {
         body: BlocConsumer<AppointmentBloc, AppointmentState>(
           listener: (context, state) {
             if (state is AppointmentInserted) {
-              context.read<AppointmentBloc>().add(
-                    AppointmentPersonFetch(
-                      (context.read<AuthBloc>().state as AuthAuthenticated)
-                          .person,
-                    ),
-                  );
               Navigator.pop(context);
             } else if (state is AppointmentError) {
               ScaffoldMessenger.of(context).showSnackBar(
