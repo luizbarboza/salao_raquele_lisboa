@@ -1,10 +1,12 @@
+import 'address.dart';
+
 class Person {
   final int id;
   final String name;
   final String cpf;
   final DateTime birthDate;
   final String phoneNumber;
-  final String address;
+  final Address address;
   final String role;
   final String avatar;
 
@@ -26,7 +28,7 @@ class Person {
       cpf: map['cpf'],
       birthDate: DateTime.parse(map['data_nascimento']),
       phoneNumber: map['numero_telefone'],
-      address: map['endereco'],
+      address: Address.fromMap(map['endereco']),
       role: map["posicao"],
       avatar: map["avatar"],
     );
@@ -39,7 +41,7 @@ class Person {
       'cpf': cpf,
       'data_nascimento': birthDate,
       'numero_telefone': phoneNumber,
-      'endereco': address,
+      'endereco': address.toMap(),
       'posicao': role,
       'avatar': avatar,
     };

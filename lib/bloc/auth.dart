@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sala_raquele_lisboa/data/person.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import '../data/address.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -47,13 +48,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
+      final address = await insertAddress({
+        "user": response.user!.id,
+        "nome": event.name,
+        "cpf": event.cpf,
+        "data_nascimento": event.birthDate,
+        "numero_telefone": event.phoneNumber,
+      });
       final person = await insertPerson({
         "user": response.user!.id,
         "nome": event.name,
         "cpf": event.cpf,
         "data_nascimento": event.birthDate,
-        "endereco": event.address,
         "numero_telefone": event.phoneNumber,
+        "endereco": address.id,
       });
       emit(AuthAuthenticated(person));
     } on AuthException catch (_) {

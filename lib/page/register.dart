@@ -22,11 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
-
-  // Contact
-  final TextEditingController _countryCodeController = TextEditingController();
-  final TextEditingController _dddController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   // Address
   final TextEditingController _cepController = TextEditingController();
@@ -55,8 +51,37 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  String _formatPhoneNumber(String value) {
+    value = value.replaceAll(RegExp(r'\D'), '');
+    if (value.length <= 2) return value;
+    if (value.length <= 6) {
+      return '(${value.substring(0, 2)}) ${value.substring(2)}';
+    }
+    if (value.length <= 10) {
+      return '(${value.substring(0, 2)}) ${value.substring(2, 6)}-${value.substring(6)}';
+    }
+    return '(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}';
+  }
+
+  String _formatCpf(String value) {
+    value = value.replaceAll(RegExp(r'\D'), '');
+    if (value.length <= 3) return value;
+    if (value.length <= 6) {
+      return '${value.substring(0, 3)}.${value.substring(3)}';
+    }
+    if (value.length <= 9) {
+      return '${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6)}';
+    }
+    return '${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6, 9)}-${value.substring(9, 11)}';
+  }
+
+  String _formatCep(String value) {
+    value = value.replaceAll(RegExp(r'\D'), '');
+    if (value.length <= 5) return value;
+    return '${value.substring(0, 5)}-${value.substring(5, 8)}';
+  }
+
   final _formKeys = [
-    GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
@@ -75,6 +100,9 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(
+                height: 5,
+              ),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -91,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(
-                height: 16,
+                height: 15,
               ),
               TextFormField(
                 obscureText: true,
@@ -116,133 +144,15 @@ class _RegisterPageState extends State<RegisterPage> {
       Step(
         state: _activeStep <= 1 ? StepState.editing : StepState.complete,
         isActive: _activeStep >= 1,
-        title: const Text('Endereço'),
+        title: const Text('Informações pessoais'),
         content: Form(
           key: _formKeys[1],
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
-                controller: _cepController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'CEP',
-                ),
-                validator: (text) {
-                  return text != null &&
-                          RegExp(r'(^[0-9]{5})-?([0-9]{3}$)').hasMatch(text)
-                      ? null
-                      : "Informe um CEP válido";
-                },
-              ),
               const SizedBox(
-                height: 16,
+                height: 5,
               ),
-              TextFormField(
-                controller: _stateController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Estado',
-                ),
-                validator: (text) {
-                  return text != null && text.isNotEmpty
-                      ? null
-                      : "Informe o estado";
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _municipalityController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Município',
-                ),
-                validator: (text) {
-                  return text != null && text.isNotEmpty
-                      ? null
-                      : "Informe o município";
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _neighborhoodController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Bairro',
-                ),
-                validator: (text) {
-                  return text != null && text.isNotEmpty
-                      ? null
-                      : "Informe o bairro";
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _publicPlaceController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Logradouro',
-                ),
-                validator: (text) {
-                  return text != null && text.isNotEmpty
-                      ? null
-                      : "Informe o logradouro";
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _numberController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Número',
-                ),
-                validator: (text) {
-                  return text != null && text.isNotEmpty
-                      ? null
-                      : "Informe o número";
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _complementController,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Complemento',
-                ),
-                validator: (text) {
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      Step(
-        state: _activeStep <= 2 ? StepState.editing : StepState.complete,
-        isActive: _activeStep >= 2,
-        title: const Text('Informações pessoais'),
-        content: Form(
-          key: _formKeys[2],
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -257,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(
-                height: 16,
+                height: 15,
               ),
               TextFormField(
                 controller: _cpfController,
@@ -275,14 +185,156 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(
-                height: 16,
+                height: 15,
               ),
               TextFormField(
-                controller: _cpfController,
+                controller: _birthDateController,
                 decoration: const InputDecoration(
                   isDense: true,
                   border: OutlineInputBorder(),
                   labelText: 'Data de nascimento',
+                ),
+                validator: (text) {
+                  return null;
+                },
+                readOnly: true,
+                onTap: () => _selectDate(context),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _phoneNumberController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Número de telefone',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o número de telefone";
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      Step(
+        state: _activeStep <= 2 ? StepState.editing : StepState.complete,
+        isActive: _activeStep >= 2,
+        title: const Text('Endereço'),
+        content: Form(
+          key: _formKeys[2],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                controller: _cepController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'CEP',
+                ),
+                validator: (text) {
+                  return text != null &&
+                          RegExp(r'(^[0-9]{5})-?([0-9]{3}$)').hasMatch(text)
+                      ? null
+                      : "Informe um CEP válido";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _stateController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Estado',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o estado";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _municipalityController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Município',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o município";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _neighborhoodController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Bairro',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o bairro";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _publicPlaceController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Logradouro',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o logradouro";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _numberController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Número',
+                ),
+                validator: (text) {
+                  return text != null && text.isNotEmpty
+                      ? null
+                      : "Informe o número";
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: _complementController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Complemento',
                 ),
                 validator: (text) {
                   return null;
@@ -293,6 +345,37 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneNumberController.addListener(() {
+      final text = _phoneNumberController.text;
+      final formattedText = _formatPhoneNumber(text);
+      _phoneNumberController.value = _phoneNumberController.value.copyWith(
+        text: formattedText,
+        selection: TextSelection.collapsed(
+          offset: formattedText.length,
+        ),
+      );
+    });
+    _cpfController.addListener(() {
+      final text = _cpfController.text;
+      final formattedText = _formatCpf(text);
+      _cpfController.value = _cpfController.value.copyWith(
+        text: formattedText,
+        selection: TextSelection.collapsed(offset: formattedText.length),
+      );
+    });
+    _cepController.addListener(() {
+      final text = _cepController.text;
+      final formattedText = _formatCep(text);
+      _cepController.value = _cepController.value.copyWith(
+        text: formattedText,
+        selection: TextSelection.collapsed(offset: formattedText.length),
+      );
+    });
   }
 
   @override
@@ -345,56 +428,59 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           const SizedBox(height: 30),
-                          _buildTextField(
-                            controller: _emailController,
-                            label: 'E-mail',
-                            hint: 'exemplo@gmail.com',
-                          ),
-                          const SizedBox(height: 15),
-                          _buildTextField(
-                            controller: _passwordController,
-                            label: 'Senha',
-                            hint: 'Digite a sua senha',
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 15),
-                          _buildTextField(
-                            controller: _nameController,
-                            label: 'Nome',
-                            hint: 'Digite o seu nome',
-                          ),
-                          const SizedBox(height: 15),
-                          _buildTextField(
-                            controller: _cpfController,
-                            label: 'CPF',
-                            hint: 'Digite seu CPF',
-                          ),
-                          const SizedBox(height: 15),
-                          TextField(
-                            controller: _birthDateController,
-                            decoration: InputDecoration(
-                              labelText: 'Data de nascimento',
-                              hintText: 'Selecione a sua data de nascimento',
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.calendar_today),
-                                onPressed: () => _selectDate(context),
-                              ),
-                              border: const OutlineInputBorder(),
-                            ),
-                            readOnly: true,
-                            onTap: () => _selectDate(context),
-                          ),
-                          const SizedBox(height: 15),
-                          _buildTextField(
-                            controller: _addressController,
-                            label: 'Endereço',
-                            hint: 'Digite o seu endereço',
-                          ),
-                          const SizedBox(height: 15),
-                          _buildTextField(
-                            controller: _phoneNumberController,
-                            label: 'Número de telefone',
-                            hint: '(DDD) Telefone',
+                          Stepper(
+                            type: StepperType.vertical,
+                            currentStep: _activeStep,
+                            steps: _steps(),
+                            onStepContinue: () {
+                              if (_formKeys[_activeStep]
+                                  .currentState!
+                                  .validate()) {
+                                if (_activeStep < (_steps().length - 1)) {
+                                  setState(() {
+                                    _activeStep += 1;
+                                  });
+                                } else {
+                                  setState(() {
+                                    context.read<AuthBloc>().add(
+                                          AuthSignUpRequested(
+                                            email: _emailController.text,
+                                            password: _passwordController.text,
+                                            name: _nameController.text,
+                                            cpf: _cpfController.text,
+                                            birthDate: DateFormat('yyyy-MM-dd')
+                                                .format(_pickedDate!),
+                                            phoneNumber:
+                                                _phoneNumberController.text,
+                                            cep: _cepController.text,
+                                            state: _stateController.text,
+                                            municipality:
+                                                _municipalityController.text,
+                                            neighborhood:
+                                                _neighborhoodController.text,
+                                            publicPlace:
+                                                _publicPlaceController.text,
+                                            number: _numberController.text,
+                                            complement:
+                                                _complementController.text,
+                                          ),
+                                        );
+                                  });
+                                }
+                              }
+                            },
+                            onStepCancel: () {
+                              if (_activeStep == 0) {
+                                return;
+                              }
+
+                              setState(() {
+                                _activeStep -= 1;
+                              });
+                            },
+                            onStepTapped: (int index) {
+                              return;
+                            },
                           ),
                           const SizedBox(height: 15),
                           TextButton(
@@ -403,7 +489,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 context,
                                 MaterialPageRoute<void>(
                                   builder: (BuildContext context) =>
-                                      LoginPage(),
+                                      const LoginPage(),
                                 ),
                               );
                             },
@@ -413,31 +499,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: colorScheme.onSurface,
                               ),
                               textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: double
-                                .infinity, // O botão ocupará toda a largura
-                            child: FilledButton(
-                              onPressed: () {
-                                context.read<AuthBloc>().add(
-                                      AuthSignUpRequested(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                        name: _nameController.text,
-                                        cpf: _cpfController.text,
-                                        birthDate: DateFormat('yyyy-MM-dd')
-                                            .format(_pickedDate!),
-                                        address: _addressController.text,
-                                        phoneNumber:
-                                            _phoneNumberController.text,
-                                      ),
-                                    );
-                              },
-                              child: const Text(
-                                'Cadastrar',
-                              ),
                             ),
                           ),
                         ],
@@ -450,22 +511,6 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         },
       ),
-    );
-  }
-
-  Widget _buildTextField(
-      {required TextEditingController controller,
-      required String label,
-      required String hint,
-      bool obscureText = false}) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        border: const OutlineInputBorder(),
-      ),
-      obscureText: obscureText,
     );
   }
 }

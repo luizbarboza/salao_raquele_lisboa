@@ -152,8 +152,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
-                              const SizedBox(height: 1),
-                              Text(person.address),
+                              /*const SizedBox(height: 1),
+                              Text(person.address),*/
                             ],
                           ),
                         ),

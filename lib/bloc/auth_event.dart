@@ -13,8 +13,14 @@ class AuthSignUpRequested extends AuthEvent {
   final String name;
   final String cpf;
   final String birthDate;
-  final String address;
   final String phoneNumber;
+  final String cep;
+  final String state;
+  final String municipality;
+  final String neighborhood;
+  final String publicPlace;
+  final String number;
+  final String complement;
 
   AuthSignUpRequested({
     required this.email,
@@ -22,8 +28,14 @@ class AuthSignUpRequested extends AuthEvent {
     required this.name,
     required this.cpf,
     required this.birthDate,
-    required this.address,
     required this.phoneNumber,
+    required this.cep,
+    required this.state,
+    required this.municipality,
+    required this.neighborhood,
+    required this.publicPlace,
+    required this.number,
+    required this.complement,
   });
 
   @override
@@ -33,8 +45,14 @@ class AuthSignUpRequested extends AuthEvent {
         name,
         cpf,
         birthDate,
-        address,
         phoneNumber,
+        cep,
+        state,
+        municipality,
+        neighborhood,
+        publicPlace,
+        number,
+        complement,
       ];
 }
 
