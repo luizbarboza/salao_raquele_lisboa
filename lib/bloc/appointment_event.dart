@@ -1,3 +1,5 @@
+import '../model/person.dart';
+
 abstract class AppointmentEvent {}
 
 class AppointmentFetch extends AppointmentEvent {
@@ -6,10 +8,10 @@ class AppointmentFetch extends AppointmentEvent {
   AppointmentFetch([this.criteria]);
 }
 
-class AppointmentFetchSpecialist extends AppointmentEvent {
-  final int specialistPersonId;
+class AppointmentPersonFetch extends AppointmentEvent {
+  final Person person;
 
-  AppointmentFetchSpecialist(this.specialistPersonId);
+  AppointmentPersonFetch(this.person);
 }
 
 class AppointmentInsert extends AppointmentEvent {

@@ -22,21 +22,17 @@ class AppointmentsPageState extends State<AppointmentsPage>
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _fetch();
-    super.initState();
   }
 
   void _fetch() {
-    final person = (context.read<AuthBloc>().state as AuthAuthenticated).person;
-    final appointmentsBloc = context.read<AppointmentBloc>();
-    if (person.role == "cliente") {
-      appointmentsBloc.add(AppointmentFetch({"cliente": person.id}));
-    } else if (person.role == "colaborador") {
-      appointmentsBloc.add(AppointmentFetchSpecialist(person.id));
-    } else if (person.role == "administrador") {
-      appointmentsBloc.add(AppointmentFetch());
-    }
+    context.read<AppointmentBloc>().add(
+          AppointmentPersonFetch(
+            (context.read<AuthBloc>().state as AuthAuthenticated).person,
+          ),
+        );
   }
 
   @override
@@ -51,7 +47,8 @@ class AppointmentsPageState extends State<AppointmentsPage>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
-          } else if (state is AppointmentDeleted) {
+          } else if (state is AppointmentInserted ||
+              state is AppointmentDeleted) {
             _fetch();
           }
         },

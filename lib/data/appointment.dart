@@ -1,4 +1,5 @@
 import '../model/appointment.dart';
+import '../model/person.dart';
 import 'provider.dart';
 
 Future<List<Appointment>> fetchAppointment(
@@ -20,6 +21,16 @@ Future<List<Appointment>> fetchSpecialistAppointment(
     criteria: {"especialista.pessoa.id": specialistPersonId},
   ));
   return data.map(Appointment.fromMap).toList();
+}
+
+Future<List<Appointment>> fetchPersonAppointment(Person person) async {
+  if (person.role == "administrador") {
+    return fetchAppointment();
+  } else if (person.role == "colaborador") {
+    return fetchSpecialistAppointment(person.id);
+  } else {
+    return fetchAppointment({"cliente": person.id});
+  }
 }
 
 Future<Appointment> insertAppointment(Map<String, Object> values) async {
