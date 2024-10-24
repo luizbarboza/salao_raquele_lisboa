@@ -26,7 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Address
   final TextEditingController _cepController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _federativeUnitController =
+      TextEditingController();
   final TextEditingController _municipalityController = TextEditingController();
   final TextEditingController _neighborhoodController = TextEditingController();
   final TextEditingController _publicPlaceController = TextEditingController();
@@ -257,7 +258,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 15,
               ),
               TextFormField(
-                controller: _stateController,
+                controller: _federativeUnitController,
                 decoration: const InputDecoration(
                   isDense: true,
                   border: OutlineInputBorder(),
@@ -460,7 +461,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                             phoneNumber:
                                                 _phoneNumberController.text,
                                             cep: _cepController.text,
-                                            state: _stateController.text,
+                                            federativeUnit:
+                                                _federativeUnitController.text,
                                             municipality:
                                                 _municipalityController.text,
                                             neighborhood:

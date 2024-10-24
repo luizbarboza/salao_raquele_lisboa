@@ -15,7 +15,7 @@ class AuthSignUpRequested extends AuthEvent {
   final String birthDate;
   final String phoneNumber;
   final String cep;
-  final String state;
+  final String federativeUnit;
   final String municipality;
   final String neighborhood;
   final String publicPlace;
@@ -30,7 +30,7 @@ class AuthSignUpRequested extends AuthEvent {
     required this.birthDate,
     required this.phoneNumber,
     required this.cep,
-    required this.state,
+    required this.federativeUnit,
     required this.municipality,
     required this.neighborhood,
     required this.publicPlace,
@@ -47,7 +47,7 @@ class AuthSignUpRequested extends AuthEvent {
         birthDate,
         phoneNumber,
         cep,
-        state,
+        federativeUnit,
         municipality,
         neighborhood,
         publicPlace,

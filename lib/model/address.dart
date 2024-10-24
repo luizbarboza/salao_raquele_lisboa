@@ -1,7 +1,7 @@
 class Address {
   final int id;
   final String cep;
-  final String state;
+  final String federativeUnit;
   final String municipality;
   final String neighborhood;
   final String publicPlace;
@@ -11,7 +11,7 @@ class Address {
   Address({
     required this.id,
     required this.cep,
-    required this.state,
+    required this.federativeUnit,
     required this.municipality,
     required this.neighborhood,
     required this.publicPlace,
@@ -23,12 +23,12 @@ class Address {
     return Address(
       id: map['id'],
       cep: map['cep'],
-      state: map['state'],
-      municipality: map['municipality'],
-      neighborhood: map['neighborhood'],
-      publicPlace: map['publicPlace'],
-      number: map['number'],
-      complement: map['complement'],
+      federativeUnit: map['unidade_federativa'],
+      municipality: map['municipio'],
+      neighborhood: map['bairro'],
+      publicPlace: map['logradouro'],
+      number: map['numero'],
+      complement: map['complemento'],
     );
   }
 
@@ -36,7 +36,7 @@ class Address {
     return {
       'id': id,
       'cep': cep,
-      'estado': state,
+      'unidade_federativa': federativeUnit,
       'municipio': municipality,
       'bairro': neighborhood,
       'logradouro': publicPlace,
