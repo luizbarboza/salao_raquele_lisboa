@@ -1,3 +1,5 @@
+import 'person.dart';
+
 class Address {
   final int id;
   final String cep;
@@ -7,6 +9,7 @@ class Address {
   final String publicPlace;
   final String number;
   final String complement;
+  final Person person;
 
   Address({
     required this.id,
@@ -17,6 +20,7 @@ class Address {
     required this.publicPlace,
     required this.number,
     required this.complement,
+    required this.person,
   });
 
   factory Address.fromMap(Map<String, dynamic> map) {
@@ -29,6 +33,7 @@ class Address {
       publicPlace: map['logradouro'],
       number: map['numero'],
       complement: map['complemento'],
+      person: Person.fromMap(map['pessoa']),
     );
   }
 
@@ -42,6 +47,7 @@ class Address {
       'logradouro': publicPlace,
       'numero': number,
       'complemento': complement,
+      'pessoa': person.toMap(),
     };
   }
 }
